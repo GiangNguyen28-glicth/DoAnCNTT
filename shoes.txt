@@ -1,0 +1,105 @@
+CREATE DATABASE shoes;
+use shoes;
+
+CREATE TABLE role(
+  id bigint NOT NULL PRIMARY KEY auto_increment,
+  name VARCHAR(255) NOT NULL,
+  code VARCHAR(255) NOT NULL,
+  createddate TIMESTAMP NULL,
+  modifieddate TIMESTAMP NULL,
+  createdby VARCHAR(255) NULL,
+  modifiedby VARCHAR(255) NULL
+);
+
+CREATE TABLE user (
+  id bigint NOT NULL PRIMARY KEY auto_increment,
+  username VARCHAR(150) NOT NULL,
+  password VARCHAR(150) NOT NULL,
+  email VARCHAR(150) NULL,
+  createddate TIMESTAMP NULL,
+  modifieddate TIMESTAMP NULL,
+  createdby VARCHAR(255) NULL,
+  modifiedby VARCHAR(255) NULL
+);
+
+CREATE TABLE user_role(
+	id bigint NOT NULL PRIMARY KEY auto_increment,
+    user_id bigint not null,
+    role_id bigint not null
+);
+
+ALTER TABLE user_role ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES user(id);
+
+ALTER TABLE user_role ADD CONSTRAINT fk_role_id FOREIGN KEY (role_id) REFERENCES role(id);
+
+
+CREATE TABLE Customer (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+user_id bigint not null,
+firstname VARCHAR(30) NOT NULL,
+lastname VARCHAR(30) NOT NULL,
+gender varchar(50) NOT NULL,
+Phone varchar(50) NOT NULL,
+Address varchar (50) NOT NULL
+);
+
+ALTER TABLE customer ADD CONSTRAINT fk_userC_id FOREIGN KEY (user_id) REFERENCES user(id);
+CREATE TABLE delivery(
+	id BIGINT AUTO_INCREMENT PRIMARY KEY,
+	name varchar(30) not null
+);
+
+CREATE TABLE saledetail (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+user_id bigint not null ,
+product_id bigint not null,
+delivery_id bigint not null,
+
+createddate TIMESTAMP NULL
+);
+
+ALTER TABLE saledetail add   FOREIGN KEY (delivery_id) REFERENCES delivery(id);
+
+ALTER TABLE saledetail ADD   FOREIGN KEY (product_id) REFERENCES product(id);
+
+ALTER TABLE saledetail ADD   FOREIGN KEY (user_id) REFERENCES user(id);
+
+Create table category(
+id bigint NOT NULL PRIMARY KEY auto_increment,
+code varchar(150) not null,
+ createddate TIMESTAMP NULL,
+  modifieddate TIMESTAMP NULL,
+  createdby VARCHAR(255) NULL,
+  modifiedby VARCHAR(255) NULL
+);
+CREATE TABLE product(
+	id bigint NOT NULL PRIMARY KEY auto_increment,
+    name VARCHAR(150) NOT NULL,
+    price float not null,
+    category_id bigint not null,
+  createddate TIMESTAMP NULL,
+  modifieddate TIMESTAMP NULL,
+  createdby VARCHAR(255) NULL,
+  modifiedby VARCHAR(255) NULL
+);
+
+ALTER TABLE product ADD CONSTRAINT fk_category_id FOREIGN KEY (category_id) REFERENCES category(id);
+
+CREATE TABLE stock(
+	id bigint NOT NULL PRIMARY KEY auto_increment,
+    product_id bigint not null,
+    amount int not null,
+  createddate TIMESTAMP NULL,
+  modifieddate TIMESTAMP NULL,
+  createdby VARCHAR(255) NULL,
+  modifiedby VARCHAR(255) NULL
+);
+ALTER TABLE stock ADD CONSTRAINT fk_product_id FOREIGN KEY (product_id) REFERENCES product(id);
+
+
+
+
+
+
+
+
