@@ -19,10 +19,10 @@ public class DeliveryService implements IDeliveryService {
     }
 
     @Override
-    public Long save(DeliveryModel deliveryModel) {
+    public Long saveDelivery(DeliveryModel deliveryModel) {
         deliveryModel.setCreatedDate(new Timestamp(System.currentTimeMillis()));
         deliveryModel.setModifiedDate(new Timestamp(System.currentTimeMillis()));
-        return deliveryDAO.save(deliveryModel);
+        return deliveryDAO.saveDelivery(deliveryModel);
     }
 
     @Override
@@ -36,9 +36,9 @@ public class DeliveryService implements IDeliveryService {
     }
 
     @Override
-    public void delete(long[] ids) {
+    public void deleteDelivery(long[] ids) {
         for(long id:ids){
-            deliveryDAO.delete(id);
+            deliveryDAO.deleteDelivery(id);
         }
     }
 

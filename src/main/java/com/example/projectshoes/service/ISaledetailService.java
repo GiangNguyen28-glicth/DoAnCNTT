@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface ISaledetailService {
     List<SaledetailModel> findAll();
-    Long save(SaledetailModel saledetailModel);
-    void delete(long[] ids);
+    Long saveSaledetail(SaledetailModel saledetailModel);
+    void deleteSaledetail(long[] ids);
     SaledetailModel findOne(Long id);
     void update(SaledetailModel saledetailModel);
     List<SaledetailModel> pageProduct(int page);

@@ -16,7 +16,7 @@ public class CategoryService implements ICategoryService {
         return categoryDAO.findAll();
     }
     @Override
-    public Long save(CategoryModel categoryModel) {
+    public Long saveCategory(CategoryModel categoryModel) {
         categoryModel.setCreatedDate(new Timestamp(System.currentTimeMillis()));
         categoryModel.setModifiedDate(new Timestamp(System.currentTimeMillis()));
         return categoryDAO.save(categoryModel);

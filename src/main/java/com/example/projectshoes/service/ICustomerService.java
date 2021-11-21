@@ -2,12 +2,21 @@ package com.example.projectshoes.service;
 
 
 import com.example.projectshoes.model.CustomerModel;
+import com.example.projectshoes.model.UserModel;
+import java.util.List;
 
 public interface ICustomerService {
 
-  CustomerModel findByUserId(Long userId);
+  CustomerModel findCustomerByUser(UserModel userModel);
 
-  Long save(CustomerModel customerModel);
+  CustomerModel findCustomerById(Long id);
 
-  void update(CustomerModel customerModel, Long userId);
+  List<CustomerModel> findAllCustomer();
+
+  Long insert(CustomerModel customerModel);
+
+  void update(CustomerModel customerModel);
+
+  void remove(CustomerModel customerModel);
+
 }

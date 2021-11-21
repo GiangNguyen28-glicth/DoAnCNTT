@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface IDeliveryService {
     List<DeliveryModel> findAll();
-    Long save(DeliveryModel deliveryModel);
+    Long saveDelivery(DeliveryModel deliveryModel);
     DeliveryModel findByDeliveryName(String name);
     DeliveryModel findByDeliveryID(Long id);
-    void delete(long[] ids);
+    void deleteDelivery(long[] ids);
     DeliveryModel findOne(Long id);
     void update(DeliveryModel deliveryModel);
     List<DeliveryModel> pageDelivery(int page);
