@@ -2,9 +2,11 @@ package com.example.projectshoes.dao.impl;
 
 import com.example.projectshoes.dao.ICategoryDAO;
 import com.example.projectshoes.dao.IProductDAO;
+import com.example.projectshoes.dao.ISaledetailDAO;
 import com.example.projectshoes.mapper.ProductMapper;
 import com.example.projectshoes.model.CategoryModel;
 import com.example.projectshoes.model.ProductModel;
+import com.example.projectshoes.model.SaledetailModel;
 import com.example.projectshoes.paging.Pageble;
 import com.example.projectshoes.service.ICategoryService;
 import com.example.projectshoes.utils.HibernateUtil;
@@ -19,6 +21,8 @@ public class ProductDAO extends AbstractDAO<ProductModel> implements IProductDAO
     Session session = HibernateUtil.getSessionFactory().openSession();
     @Inject
     ICategoryDAO categoryService;
+    @Inject
+    ISaledetailDAO saledetailDAO;
     public ProductDAO() {
         setType(ProductModel.class);
     }
@@ -67,7 +71,7 @@ public class ProductDAO extends AbstractDAO<ProductModel> implements IProductDAO
         q.setFirstResult(pageble.getOffset());
         q.setMaxResults(pageble.getLimit());
         productModel.setListResult(q.getResultList());
-        return productModel .getListResult();
+        return productModel.getListResult();
     }
 
     @Override
@@ -101,4 +105,5 @@ public class ProductDAO extends AbstractDAO<ProductModel> implements IProductDAO
         int count=count1.get(0).intValue();
         return count;
     }
+
 }

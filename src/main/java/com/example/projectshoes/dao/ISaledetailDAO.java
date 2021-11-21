@@ -2,6 +2,7 @@ package com.example.projectshoes.dao;
 
 import com.example.projectshoes.model.SaledetailModel;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 public interface ISaledetailDAO extends GenericDAO<SaledetailModel>{
@@ -16,4 +17,5 @@ public interface ISaledetailDAO extends GenericDAO<SaledetailModel>{
     List<SaledetailModel> PageSaledetail(int page);
     int getTotalItem();
     SaledetailModel findbyCode(Long code);
+    List<SaledetailModel> gettop3();
 }

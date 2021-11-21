@@ -3,11 +3,13 @@ package com.example.projectshoes.controller.web;
 import com.example.projectshoes.constant.SystemConstant;
 import com.example.projectshoes.model.ProductModel;
 import com.example.projectshoes.model.RoleModel;
+import com.example.projectshoes.model.SaledetailModel;
 import com.example.projectshoes.model.UserModel;
 import com.example.projectshoes.paging.PageRequest;
 import com.example.projectshoes.paging.Pageble;
 import com.example.projectshoes.service.IProductService;
 import com.example.projectshoes.service.IRoleService;
+import com.example.projectshoes.service.ISaledetailService;
 import com.example.projectshoes.service.IUserService;
 import com.example.projectshoes.utils.FormUtil;
 import com.example.projectshoes.utils.SessionUtil;
@@ -30,6 +32,8 @@ public class HomeController extends HttpServlet {
   IUserService userService;
   @Inject
   IProductService productService;
+  @Inject
+  ISaledetailService saledetailService;
   private ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
 
   @Override
@@ -56,9 +60,12 @@ public class HomeController extends HttpServlet {
       resp.sendRedirect(req.getContextPath() + "/trang-chu");
     } else {
       ProductModel productModel = new ProductModel();
+      SaledetailModel saledetailModel=new SaledetailModel();
+      saledetailModel.setListResult(saledetailService.gettop3());
       Pageble pageble = new PageRequest(1, 10);
       productModel.setListResult(productService.findAll(pageble,key));
       req.setAttribute("productModel", productModel);
+      req.setAttribute("saledetailModel", saledetailModel);
       String userSuccess = req.getParameter("user");
       req.setAttribute("user", userSuccess);
       RequestDispatcher rd = req.getRequestDispatcher("/views/web/home.jsp");

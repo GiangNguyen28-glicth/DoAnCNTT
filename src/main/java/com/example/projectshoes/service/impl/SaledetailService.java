@@ -73,4 +73,9 @@ public class SaledetailService implements ISaledetailService {
     public int getTotalItem() {
         return saledetailDAO.getTotalItem();
     }
+
+    @Override
+    public List<SaledetailModel> gettop3() {
+        return saledetailDAO.gettop3();
+    }
 }

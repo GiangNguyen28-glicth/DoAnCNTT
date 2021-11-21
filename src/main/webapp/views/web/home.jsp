@@ -130,86 +130,31 @@
                         <div class="hading pb-20">
                             <h2 class="hading-title">best <span>seller</span></h2>
                         </div>
-                        <div class="seller">
-                            <div class="seller-box align-flax w-100 pb-20">
-                                <div class="seller-img">
-                                    <a href="<c:url value="/error-page"/>" class="display-b">
-                                        <img src="<c:url value='/template/web/images/product-1.jpg'/>"
-                                             alt="shoes"
-                                             class="transition">
-                                    </a>
-                                </div>
-                                <div class="seller-contain pl-15">
-                                    <a href="<c:url value="/error-page"/>"
-                                       class="product-name text-uppercase">men's harpoon 2 eye
-                                        boot</a>
-                                    <span class="product-pricce">$478.00</span>
-                                </div>
-                            </div>
-                            <div class="seller-box align-flax w-100 pb-20">
-                                <div class="seller-img">
-                                    <a href="<c:url value="/error-page"/>" class="display-b">
-                                        <img src="<c:url value='/template/web/images/product-7.jpg'/>"
-                                             alt="shoes"
-                                             class="transition">
-                                    </a>
-                                </div>
-                                <div class="seller-contain pl-15">
-                                    <a href="<c:url value="/error-page"/>"
-                                       class="product-name text-uppercase">BUSCIPIT AT MAGNA</a>
-                                    <span class="product-pricce">$478.00</span>
+                        <c:forEach var="item" items="${saledetailModel.listResult}">
+                            <div class="seller">
+                                <div class="seller-box align-flax w-100 pb-20">
+                                    <div class="seller-img">
+                                        <a href="<c:url value="/product?productid=${item.id}"/>" class="display-b">
+                                            <img src="${item.avatar}"
+                                                 alt="shoes"
+                                                 class="transition">
+                                        </a>
+                                    </div>
+                                    <div class="seller-contain pl-15">
+                                        <a href="<c:url value="/error-page"/>"
+                                           class="product-name text-uppercase">${item.name}</a>
+                                        <span class="product-pricce">${item.price}</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="seller-box align-flax w-100 pb-20">
-                                <div class="seller-img">
-                                    <a href="<c:url value="/error-page"/>" class="display-b">
-                                        <img src="<c:url value='/template/web/images/product-3.jpg'/>"
-                                             alt="shoes"
-                                             class="transition">
-                                    </a>
-                                </div>
-                                <div class="seller-contain pl-15">
-                                    <a href="<c:url value="/error-page"/>"
-                                       class="product-name text-uppercase">AENEAN SAGITTIS</a>
-                                    <span class="product-pricce">$478.00</span>
-                                </div>
-                            </div>
-                            <div class="seller-box align-flax w-100 pb-20">
-                                <div class="seller-img">
-                                    <a href="<c:url value="/error-page"/>" class="display-b">
-                                        <img src="<c:url value='/template/web/images/product-1.jpg'/>"
-                                             alt="shoes"
-                                             class="transition">
-                                    </a>
-                                </div>
-                                <div class="seller-contain pl-15">
-                                    <a href="<c:url value="/error-page"/>"
-                                       class="product-name text-uppercase">men's harpoon 2 eye
-                                        boot</a>
-                                    <span class="product-pricce">$478.00</span>
-                                </div>
-                            </div>
-                        </div>
+                        </c:forEach>
+
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-6">
                         <div class="hading pb-20">
                             <h2 class="hading-title">top <span>seller</span></h2>
                         </div>
                         <div class="seller">
-                            <div class="seller-box align-flax w-100 pb-20">
-                                <div class="seller-img">
-                                    <a href="<c:url value="/error-page"/>" class="display-b">
-                                        <img src="<c:url value='/template/web/images/product-4.jpg'/>"
-                                             alt="shoes"
-                                             class="transition">
-                                    </a>
-                                </div>
-                                <div class="seller-contain pl-15">
-                                    <a href="<c:url value="/error-page"/>"
-                                       class="product-name text-uppercase">ALIQUAM LOBORTIS EST</a>
-                                    <span class="product-pricce">$478.00</span>
-                                </div>
-                            </div>
                             <div class="seller-box align-flax w-100 pb-20">
                                 <div class="seller-img">
                                     <a href="<c:url value="/error-page"/>" class="display-b">
