@@ -1,0 +1,51 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- JDBC Database connection settings -->
+        <!--    <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>-->
+
+        <!--    <property name="connection.driver_class">com.mysql.jdbc.Driver</property>-->
+        <!--&lt;!&ndash;    <property name="connection.url">jdbc:mysql://localhost:3306/test_shoes?useSSL=false</property>&ndash;&gt;-->
+        <!--&lt;!&ndash;    <property name="connection.username">root</property>&ndash;&gt;-->
+        <!--&lt;!&ndash;    <property name="connection.password">123456</property>&ndash;&gt;-->
+
+        <!--    <property name="connection.url">jdbc:mysql://b8b2adbe576e3b:00940ca4@us-cdbr-east-04.cleardb.com/heroku_8a6259dee3ce528?reconnect=true</property>-->
+        <!--    <property name="connection.username">b8b2adbe576e3b</property>-->
+        <!--    <property name="connection.password">00940ca4</property>-->
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/test_shoes?useSSL=false</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">123456</property>
+        <!--    <property name="connection.url">-->
+        <!--      jdbc:mysql://b8b2adbe576e3b:00940ca4@us-cdbr-east-04.cleardb.com/heroku_8a6259dee3ce528?reconnect=true-->
+        <!--    </property>-->
+        <!--    <property name="connection.url">jdbc:mysql://b8b2adbe576e3b:00940ca4@us-cdbr-east-04.cleardb.com/heroku_8a6259dee3ce528?reconnect=true</property>-->
+        <!--    <property name="connection.username">b8b2adbe576e3b</property>-->
+        <!--    <property name="connection.password">00940ca4</property>-->
+        <!-- JDBC connection pool settings ... using built-in test pool -->
+        <!--    <property name="connection.pool_size">1</property>-->
+        <!-- Select our SQL dialect -->
+        <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+        <!-- Echo the SQL to stdout -->
+        <property name="show_sql">true</property>
+        <!-- Set the current session context -->
+        <property name="current_session_context_class">thread</property>
+        <property name="hbm2ddl.auto">none</property>
+        <!-- dbcp connection pool configuration -->
+        <property name="hibernate.dbcp.initialSize">5</property>
+        <property name="hibernate.dbcp.maxTotal">20</property>
+        <property name="hibernate.dbcp.maxIdle">10</property>
+        <property name="hibernate.dbcp.minIdle">5</property>
+        <property name="hibernate.dbcp.maxWaitMillis">-1</property>
+        <mapping class="com.example.projectshoes.model.CustomerModel"/>
+        <mapping class="com.example.projectshoes.model.CategoryModel"/>
+        <mapping class="com.example.projectshoes.model.UserModel"/>
+        <mapping class="com.example.projectshoes.model.RoleModel"/>
+        <mapping class="com.example.projectshoes.model.ProductModel"/>
+        <mapping class="com.example.projectshoes.model.StockModel"/>
+        <mapping class="com.example.projectshoes.model.DeliveryModel"/>
+        <mapping class="com.example.projectshoes.model.SaledetailModel"/>
+    </session-factory>
+</hibernate-configuration>
