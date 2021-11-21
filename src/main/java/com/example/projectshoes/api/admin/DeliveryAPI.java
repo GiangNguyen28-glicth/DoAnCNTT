@@ -6,6 +6,7 @@ import com.example.projectshoes.service.IDeliveryService;
 import com.example.projectshoes.utils.HttpUtil;
 import com.example.projectshoes.utils.SessionUtil;
 import org.codehaus.jackson.map.ObjectMapper;
+
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,7 +35,7 @@ public class DeliveryAPI extends HttpServlet {
         UserModel userModel=(UserModel) SessionUtil.getInstance().getValue(req,"USERMODEL");
         deliveryModel.setCreatedBy(userModel.getUsername());
         deliveryModel.setModifiedBy(userModel.getUsername());
-        deliveryService.save(deliveryModel);
+        deliveryService.saveDelivery(deliveryModel);
         mapper.writeValue(resp.getOutputStream(),deliveryModel);
     }
     @Override
@@ -43,7 +44,7 @@ public class DeliveryAPI extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
         DeliveryModel deliveryModel =  HttpUtil.of(req.getReader()).toModel(DeliveryModel.class);
-        deliveryService.delete(deliveryModel.getIds());
+        deliveryService.deleteDelivery(deliveryModel.getIds());
         mapper.writeValue(resp.getOutputStream(), "{}");
     }
 

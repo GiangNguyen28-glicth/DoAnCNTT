@@ -138,7 +138,7 @@
     }
     function Sub() {
         var input=Number(document.getElementById("quantity").value);
-        if(input<0){
+        if(input>1){
             document.getElementById("quantity").value=input-1;
         }
     }

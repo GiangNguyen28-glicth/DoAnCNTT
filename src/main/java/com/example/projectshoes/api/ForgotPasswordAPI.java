@@ -3,8 +3,10 @@ package com.example.projectshoes.api;
 import com.example.projectshoes.constant.SystemConstant;
 import com.example.projectshoes.model.UserModel;
 import com.example.projectshoes.service.IUserService;
+import com.example.projectshoes.utils.HashingUtil;
 import com.example.projectshoes.utils.HttpUtil;
 import com.example.projectshoes.utils.JavaMailUtil;
+import com.example.projectshoes.utils.MailTemplateUtil;
 import com.example.projectshoes.utils.PathUtil;
 import java.io.IOException;
 import javax.inject.Inject;
@@ -24,7 +26,7 @@ public class ForgotPasswordAPI extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException {
+          throws ServletException, IOException {
     String userEmail = PathUtil.pathInf(req)[1];
     ObjectMapper mapper = new ObjectMapper();
     req.setCharacterEncoding("UTF-8");
@@ -34,7 +36,7 @@ public class ForgotPasswordAPI extends HttpServlet {
       try {
         SystemConstant.FLAG = true;
         SystemConstant.ID = userModel.getId();
-        JavaMailUtil.sendMail(userEmail, SystemConstant.TEAMPLATE_MAIL);
+        JavaMailUtil.sendMail(userEmail, MailTemplateUtil.templateMailForgotpassword(), "Forgot password");
         mapper.writeValue(resp.getOutputStream(), true);
       } catch (MessagingException e) {
         e.printStackTrace();
@@ -46,15 +48,15 @@ public class ForgotPasswordAPI extends HttpServlet {
 
   @Override
   protected void doPut(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException {
+          throws ServletException, IOException {
     ObjectMapper mapper = new ObjectMapper();
     req.setCharacterEncoding("UTF-8");
     resp.setContentType("application/json");
     UserModel oddUserModel = HttpUtil.of(req.getReader()).toModel(UserModel.class);
-    UserModel newUserModel = userService.findById(SystemConstant.ID);
+    UserModel newUserModel = userService.findByUserID(SystemConstant.ID);
     if (newUserModel != null) {
       SystemConstant.ID = null;
-      newUserModel.setPassword(oddUserModel.getPassword());
+      newUserModel.setPassword(HashingUtil.hash((oddUserModel.getPassword())));
       userService.update(newUserModel);
       mapper.writeValue(resp.getOutputStream(), true);
     } else {

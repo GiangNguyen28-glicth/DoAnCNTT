@@ -13,7 +13,8 @@ import javax.mail.internet.MimeMessage;
 
 public class JavaMailUtil {
 
-  public static void sendMail(String recepient,String template) throws MessagingException {
+  public static void sendMail(String recepient, String template, String subject)
+          throws MessagingException {
     Properties properties = new Properties();
 
     properties.put("mail.smtp.auth", "true");
@@ -21,8 +22,8 @@ public class JavaMailUtil {
     properties.put("mail.smtp.host", "smtp.gmail.com");
     properties.put("mail.smtp.port", "587");
 
-    String myAccountEmail = "19110262@student.hcmute.edu.vn";
-    String password = "Hohoaiphong1999lh";
+    String myAccountEmail = "longtam20015@gmail.com";
+    String password = "Caothu01";
     Session session = Session.getInstance(properties, new Authenticator() {
       @Override
       protected PasswordAuthentication getPasswordAuthentication() {
@@ -30,21 +31,22 @@ public class JavaMailUtil {
       }
     });
 
-    Message message = prepareMessage(session, myAccountEmail, recepient,template);
+    Message message = prepareMessage(session, myAccountEmail, recepient, template, subject);
 
     Transport.send(message);
     System.out.println("Message sent successfully");
   }
 
-  private static Message prepareMessage(Session session, String myAccountEmail, String recepient,String template) {
+  private static Message prepareMessage(Session session, String myAccountEmail, String recepient,
+                                        String template, String subject) {
     Message message = new MimeMessage(session);
     try {
 
       message.setFrom(new InternetAddress(myAccountEmail));
       message.setRecipient(RecipientType.TO, new InternetAddress(recepient));
-      message.setSubject("Rest Password");
+      message.setSubject(subject);
       message.setContent(template,
-          "text/html");
+              "text/html");
       return message;
     } catch (MessagingException e) {
       e.printStackTrace();
