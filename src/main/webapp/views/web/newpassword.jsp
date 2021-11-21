@@ -29,7 +29,7 @@
                     <label class="form-label">Password</label>
                     <input type="password" id="password" name="password" class="form-control"
                            placeholder="Password" required>
-                    <span id="user_password" style="color: red"></span>
+                    <span id="user_password" style="color: red"></span><br>
                     <label class="form-label">Repassword</label>
                     <input type="password" id="repassword" name="repassword" class="form-control"
                            placeholder="Repassword" required>

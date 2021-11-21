@@ -38,31 +38,59 @@
             </div>
             <form class="checkout-form" action="<c:url value='/dang-nhap'/>" id="formLogin"
                   method="post">
-                <div class="form-group">
-                    <label class="form-label">Username</label>
-                    <input type="text" id="username" name="username" class="form-control"
-                           placeholder="Username" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" id="password" name="password" class="form-control"
-                           placeholder="Enter your Password"
-                           required>
-                </div>
+                <c:if test="${not empty checked}">
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <input type="text" id="usernameU" name="username" class="form-control"
+                               placeholder="Username" required value="${rememberUsername}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" id="passwordU" name="password" class="form-control"
+                               placeholder="Enter your Password"
+                               required value="${rememberPassword}">
+                    </div>
+                </c:if>
+                <c:if test="${empty checked}">
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <input type="text" id="username" name="username" class="form-control"
+                               placeholder="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" id="password" name="password" class="form-control"
+                               placeholder="Enter your Password"
+                               required>
+                    </div>
+                </c:if>
                 <div class="login-btn-g">
                     <div class="row">
                         <div class="col-6">
                             <div class="check-box">
-                                        <span>
-								                <input type="checkbox" class="checkbox" id="account"
-                                                       name="Create an Account?">
-								                <label for="account">Remember Me</label>
-								            </span>
+                                <c:if test="${empty checked}">
+                                <span>
+                                    <input type="checkbox" class="checkbox"
+                                           id="checked"
+                                           name="checked">
+                                    <label for="checked">Remember Me</label>
+                                </span>
+                                </c:if>
+
+                                <c:if test="${not empty checked}">
+                                <span>
+                                    <input type="checkbox" class="checkbox"
+                                           id="checkedU"
+                                           name="checked" checked>
+                                    <label for="checkedU">Remember Me</label>
+                                </span>
+                                </c:if>
                             </div>
                         </div>
                         <div class="col-6">
                             <input type="hidden" value="login" name="action">
-                            <button name="submit" type="submit" class="btn btn-color right-side">Log
+                            <button name="submit" type="submit"
+                                    class="btn btn-color right-side">Log
                                 In
                             </button>
                         </div>
@@ -184,7 +212,6 @@
       }
     });
   }
-
 </script>
 
 

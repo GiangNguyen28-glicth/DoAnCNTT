@@ -24,9 +24,10 @@
           href="<c:url value='/template/web/css/magnific-popup.css'/> ">
     <link rel="stylesheet" type="text/css" href="<c:url value='/template/web/css/animate.css'/> ">
     <link rel="stylesheet" type="text/css" href="<c:url value='/template/web/css/shoes.css'/> ">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/template/web/css/shoes.css'/> ">
     <link rel="stylesheet" type="text/css"
           href="<c:url value='/template/web/css/responsive.css'/> ">
-
+    <script src="<c:url value="/ckeditor/ckeditor.js"/>"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous"
@@ -68,7 +69,23 @@
 <script src="<c:url value='/template/web/js/owl.carousel.min.js'/>"></script>
 <script src="<c:url value='/template/web/js/custom.js'/>"></script>
 <script src="<c:url value='/template/paging/jquery.twbsPagination.js' />"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.8/firebase-storage.js"></script>
+
+<script type="module">
+  const firebaseConfig = {
+    apiKey: "AIzaSyCM8GPMn5mU7_B0Eg-kGiWZZ0DpVKDUZp0",
+    authDomain: "hoaiphong-4cfd9.firebaseapp.com",
+    projectId: "hoaiphong-4cfd9",
+    storageBucket: "hoaiphong-4cfd9.appspot.com",
+    messagingSenderId: "413471605092",
+    appId: "1:413471605092:web:1aa136cb962420c557ba71",
+    measurementId: "G-80ETZH4J6E"
+  };
+  firebase.initializeApp(firebaseConfig);
+</script>
 <script>
+
   /* ------------ Newslater-popup JS Start ------------- */
   $(window).on('load', function () {
     setTimeout(function () {
@@ -84,8 +101,9 @@
     }, 10000)
   });
   /* ------------ Newslater-popup JS End ------------- */
-
 </script>
+
+
 </body>
 
 </html>

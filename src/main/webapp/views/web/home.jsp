@@ -18,7 +18,7 @@
                                 <h2 class="banner-title">men <span>shoes</span></h2>
                                 <p class="banner-sub">Lorem ipsum dolor sit amet, consectetuer
                                     adipiscing elit. Donec odio. Quisque volutpat mattis eros.</p>
-                                <a href="<c:url value="/error-page"/>" class="btn">Shop now</a>
+                                <a href="<c:url value="/shop?page=1&&maxPageItem=16"/>" class="btn">Shop now</a>
                             </div>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                     <div class="featured-product mb-25">
                         <div class="product-img transition mb-15">
                             <a href="<c:url value="/product?productid=${item.id}"/>">
-                                <img src="<c:url value='/template/web/images/product-1.jpg'/>"
+                                <img src="${item.avatar}"
                                      alt="product" class="transition">
                             </a>
                             <div class="new-label">
@@ -114,7 +114,7 @@
             <h1 class="banner-title text-uppercase"><span>the</span> summer</h1>
             <p class="banner-sub">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec
                 odio. </p>
-            <a href="<c:url value="/error-page"/>" class="btn">Shop now</a>
+            <a href="<c:url value="/shop?page=1&&maxPageItem=16"/>" class="btn">Shop now</a>
         </div>
     </div>
 </section>
@@ -505,26 +505,6 @@
         </div>
     </div>
 </div>
-    <%--var totalPages = ${productModel.totalPage};--%>
-    <%--var currentPage = ${productModel.page};--%>
-    <%--var limit=10;--%>
-    <%--$(function () {--%>
-    <%--    window.pagObj = $('#pagination').twbsPagination({--%>
-    <%--        totalPages: totalPages,--%>
-    <%--        visiblePages: 3,--%>
-    <%--        startPage: currentPage,--%>
-    <%--        onPageClick: function (event, page) {--%>
-    <%--            if (currentPage != page) {--%>
-    <%--                $('#maxPageItem').val(limit);--%>
-    <%--                $('#page').val(page);--%>
-    <%--                $('#formproduct').submit();--%>
-    <%--            }--%>
-    <%--        }--%>
-    <%--    });--%>
-    <%--});--%>
-    <%--function abc() {--%>
-    <%--    console.log(1);--%>
-    <%--}--%>
 </body>
 </html>
 

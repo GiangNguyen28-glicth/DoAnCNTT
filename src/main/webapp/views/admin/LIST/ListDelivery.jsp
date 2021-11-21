@@ -59,7 +59,10 @@
                             <td>${item.modifiedBy}</td>
                             <td>${item.modifiedDate}</td>
                             <td><a class="me-3 text-lg text-success"
-                                   href="/admin-delivery?action=edit&&deliveryid=${item.id}"><i class="far fa-edit"></i></a></td>
+                                   href="/admin-delivery?action=edit&&deliveryid=${item.id}"><i class="far fa-edit"></i></a>
+                                <a class="text-lg text-danger" onclick="deleteDelivery(${item.id})" href="">
+                                    <i class="far fa-trash-alt"></i></a>
+                            </td>
                         </tr>
                     </c:forEach>
                     </tbody>
@@ -94,6 +97,11 @@
         deleteDelivery(data);
     });
     function deleteDelivery(data) {
+        if(typeof (data)==="number"){
+            var data2={};
+            data2['ids']=[data];
+            data=data2;
+        }
         $.ajax({
             url: '${APIDeliveries}',
             type: 'DELETE',

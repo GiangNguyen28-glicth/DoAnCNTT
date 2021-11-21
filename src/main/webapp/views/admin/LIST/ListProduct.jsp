@@ -8,6 +8,7 @@
         <li class="breadcrumb-item active">Products </li>
     </ul>
 </div>
+<div style="margin-top: 10px" class="form-text" id="notification"></div>
 <div class="page-header d-flex justify-content-between align-items-center">
     <div>
         <h1 class="page-heading">Products</h1>
@@ -57,14 +58,14 @@
                             <td>${item.price}</td>
                             <td>${item.size}</td>
                             <td>${item.quantity}</td>
-                            <td>${item.categoryId}</td>
+                            <td>${item.category.id}</td>
                             <td class="text-muted">${item.createdDate}</td>
                             <td class="text-muted">${item.createdBy}</td>
                             <td class="text-muted">${item.modifiedBy}</td>
                             <td class="text-muted">${item.modifiedDate}</td>
                             <td><a class="me-3 text-lg text-success"
-                                   href="/admin-product?action=edit&&productid=${item.id}"><i class="far fa-edit"></i></a><a class="text-lg text-danger" onclick="deleteProduct(${item.id})" href="">
-                                <i class="far fa-trash-alt"></i></a></td>
+                                   href="/admin-product?action=edit&&productid=${item.id}"><i class="far fa-edit"></i></a><button type="button" class="text-lg text-danger" onclick="deleteProduct(${item.id})" />
+                                <i class="far fa-trash-alt"></i></button></td>
                         </tr>
                         <input type="hidden" value="${productModel.id}" id="id${productModel.id}" name="id${productModel.id}"/>
                     </c:forEach>
@@ -77,7 +78,7 @@
                     <option>A-Z</option>
                     <option>Price</option>
                 </select>
-                <button id="btndelete" class="btn btn-sm btn-outline-primary align-top">Delete</button>
+                <button type="button" id="btndelete" class="btn btn-sm btn-outline-primary align-top">Delete</button>
             </span>
             </div>
         </div>
@@ -96,6 +97,7 @@
         }).get();
         data['ids'] = ids;
         deleteProduct(data);
+
     });
     function deleteProduct(data) {
         if(typeof (data)==="number"){
@@ -120,6 +122,7 @@
                 console.log("Error")
             }
         });
+        return false;
     }
     function Sort(param) {
         var message = document.getElementById('sort');

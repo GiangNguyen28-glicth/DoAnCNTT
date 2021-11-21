@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:url var="APIProduct" value="/api-product"/>
 <html>
 <body>
 <section class="page-banner">
@@ -206,12 +207,6 @@
                                             <label for="price_7">$209.00 - $217.00 (3)</label>
                                         </div>
                                     </li>
-                                    <li>
-                                        <div class="check-box">
-                                            <input type="checkbox" class="checkbox" id="price_8" name="Cotton">
-                                            <label for="price_8">$309.00 - $321.00 (1)</label>
-                                        </div>
-                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -223,7 +218,7 @@
                             <div class="col-xl-6 col-lg-5 col-md-6 mb-r-15">
                                 <div class="view">
                                     <div class="list-types grid active">
-                                        <a href="shop.html">
+                                        <a href="/shop">
                                             <div class="grid-icon list-types-icon">
                                                 <i class="fa fa-th-large transition" aria-hidden="true"></i>
                                             </div>
@@ -244,11 +239,11 @@
                                 <div class="show-item">
                                     <span class="ml-0">Sort By:</span>
                                     <div class="select-item">
-                                        <select class="m-w-130">
+                                        <select id="select" onchange="Sort(this)" class="m-w-130">
                                             <option value="" selected="selected">Default sorting</option>
-                                            <option value="">Sort by A-Z</option>
-                                            <option value="">Z-A</option>
-                                            <option value="">Price</option>
+                                            <option>A-Z</option>
+                                            <option>Z-A</option>
+                                            <option>Price</option>
                                         </select>
                                     </div>
                                 </div>
@@ -266,26 +261,26 @@
                         </div>
                     </div>
                     <div class="featured">
-                        <div class="row">
-                        <c:forEach var="item" items="${productModel.listResult}">
-                            <div class="featured-product mb-25">
-                                <div class="product-img transition mb-15">
-                                    <a href="/product?productid=${item.id}">
-                                        <img src="<c:url value="/template/web/images/product-1.jpg"/>" alt="product" class="transition">
-                                    </a>
-                                    <div class="new-label">
-                                        <span class="text-uppercase">New</span>
+                        <div data-price="" class="row">
+                            <c:forEach var="item" items="${productModel.listResult}">
+                                <div class="featured-product mb-25">
+                                    <div class="product-img transition mb-15">
+                                        <a href="/product?productid=${item.id}">
+                                            <img src="${item.avatar}" alt="product" class="transition">
+                                        </a>
+                                        <div class="new-label">
+                                            <span class="text-uppercase">New</span>
+                                        </div>
+                                        <div class="product-details-btn text-uppercase text-center transition">
+                                            <a href="/product?productid=${item.id}" class="quick-popup">Quick View</a>
+                                        </div>
                                     </div>
-                                    <div class="product-details-btn text-uppercase text-center transition">
-                                        <a href="/product?productid=${item.id}" class="quick-popup">Quick View</a>
+                                    <div class="product-desc">
+                                        <a href="/product?productid=${item.id}" class="product-name text-uppercase">${item.name}</a>
+                                        <span class="product-pricce">$${item.price}</span>
                                     </div>
                                 </div>
-                                <div class="product-desc">
-                                    <a href="/product?productid=${item.id}" class="product-name text-uppercase">${item.name}</a>
-                                    <span class="product-pricce">$${item.price}</span>
-                                </div>
-                            </div>
-                        </c:forEach>
+                            </c:forEach>
                         </div>
                     </div>
                     <div style="margin-left: 250px"><ul class="pagination" id="pagination"></ul></div>
@@ -293,13 +288,46 @@
             </div>
         </div>
     </section>
+    <c:if test="${not empty categorycode}">
+        <input type="hidden" value="" id="categorycode" name="categorycode"/>
+    </c:if>
     <input type="hidden" value="" id="page" name="page"/>
     <input type="hidden" value="" id="maxPageItem" name="maxPageItem"/>
 </form>
 <script>
     var totalPages = ${productModel.totalPage};
     var currentPage = ${productModel.page};
-    var limit = 4;
+    var category="${categorycode}";
+    function Sort(param) {
+        var value = param.value;
+        var value2="";
+        if(category!="")
+        {
+            value2=category;
+        }
+        $.ajax({
+            url: '${APIProduct}',
+            type: 'GET',
+            contentType: 'application/json',
+            data: {
+                keyvalue:value,
+                categorycode:value2
+            },
+            dataType: 'json',
+            success: function (result) {
+                if(category==""){
+                    window.location.href="/shop?page=1&&maxPageItem=16";
+                }
+                else {
+                    window.location.href="/shop/collections?categorycode="+category;
+                }
+            },
+            error:function (err) {
+                console.log(err);
+            }
+        });
+    }
+    var limit = 16;
     $(function () {
         window.pagObj = $('#pagination').twbsPagination({
             totalPages: totalPages,
@@ -308,6 +336,9 @@
             onPageClick: function (event, page) {
                 event.preventDefault();
                 if (currentPage != page) {
+                    if(category!="") {
+                        $('#categorycode').val(category);
+                    }
                     $('#maxPageItem').val(limit);
                     $('#page').val(page);
                     $('#formshop').submit();

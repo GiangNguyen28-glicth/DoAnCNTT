@@ -107,18 +107,20 @@
                                                    class="megamenu-title">Product
                                                     Types</a>
                                                 <ul>
-                                                    <li><a href="<c:url value="/error-page"/>">Van
-                                                        Shoes</a></li>
-                                                    <li><a href="<c:url value="/error-page"/>">MLB
+                                                    <li><a href="<c:url value="/shop?page=1&&maxPageItem=16"/>">All
                                                         Shoes</a>
                                                     </li>
-                                                    <li><a href="<c:url value="/error-page"/>">Convert
-                                                        Shoes</a></li>
-                                                    <li><a href="<c:url value="/error-page"/>">Paddock
-                                                        Shoes</a></li>
-                                                    <li><a href="<c:url value="/error-page"/>">Postillion
+                                                    <li><a href="<c:url value="/shop/collections?categorycode=Van"/>">Van
                                                         Shoes</a>
                                                     </li>
+                                                    <li><a href="<c:url value="/shop/collections?categorycode=MLB"/>">MLB
+                                                        Shoes</a>
+                                                    </li>
+                                                    <li><a href="<c:url value="/shop/collections?categorycode=Convert"/>">Convert
+                                                        Shoes</a>
+                                                    </li> <li><a href="<c:url value="/shop/collections?categorycode=Bitis"/>">Bitis
+                                                    Shoes</a>
+                                                </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -144,12 +146,12 @@
                             <c:if test="${not empty sessionScope.get('USERMODEL')}">
                                 <li class="dropdown">
                                     <span class="opener plus"></span>
-                                    <a href="<c:url value="/error-page"/>">Account</a>
+                                    <a href="<c:url value="#"/>">Account</a>
                                     <div class="megamenu">
                                         <div class="megamenu-inner">
                                             <ul>
-                                                <li><a href="<c:url value="/error-page"/>">My
-                                                    account</a>
+                                                <li><a href="<c:url value="/change-profile"/>">Update
+                                                    profile</a>
                                                 </li>
                                                 <li><a href="<c:url value="/error-page"/>">Blog</a>
                                                 </li>
@@ -167,9 +169,9 @@
                 <div class="search-right">
                     <div class="menu-toggle"><span></span></div>
                     <div class="search-menu">
-                        <input type="text" name="search" class="search-input"
-                               placeholder="Search text">
-                        <input type="submit" name="submit" class="search-btn">
+                        <input id="key" type="text" name="search" class="search-input"
+                               placeholder="Search text" value="">
+                        <input type="submit" name="submit" class="search-btn" onclick="Search()">
                         <div class="search-button-i transition">
                             <img src="<c:url value='/template/web/images/search.png'/>"
                                  class="position-r transition" alt="search">
@@ -270,7 +272,7 @@
                                     <div class="clearfix"></div>
                                     <div class="mt-20">
                                         <a href="<c:url value="/cart"/>" class="btn">Cart</a>
-                                        <a href="<c:url value="/error-page"/>"
+                                        <a href="<c:url value="/cart?action=checkout"/>"
                                            class="btn btn-color right-side">Checkout</a>
                                     </div>
                                 </div>
@@ -281,5 +283,16 @@
             </div>
         </div>
     </div>
+    <script>
+        function Search() {
+            var input=document.getElementById("key").value;
+            if(input==""){
+                window.location.href="http://localhost:8080/shop?page=1&&maxPageItem=16";
+            }
+            else {
+                window.location.href="http://localhost:8080/shop?page=1&&maxPageItem=16&&key="+input;
+            }
+        }
+    </script>
 </header>
 

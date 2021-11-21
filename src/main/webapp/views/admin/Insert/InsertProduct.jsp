@@ -2,6 +2,7 @@
 <c:url var="APIProduct" value="/api-product"/>
 <html>
 <body>
+
 <form id="formproduct">
     <div class="page-header">
         <h1 class="page-heading">Product Name</h1>
@@ -48,18 +49,16 @@
                                 </div>
                             </div>
                             <div class="col-12 col-lg-6 text-sm">
-                                <label class="form-label text-muted">Quantity</label>
-                                <div class="input-group">
-                                    <div class="input-group-text">$ </div>
-                                    <input class="form-control">
-                                </div>
+                                <label class="form-label text-muted">Image</label>
+                                <input type="file" id="avatar" name="avatar" class="form-control"
+                                       placeholder="Avatar"
+                                       required>
                             </div>
                         </div>
                         <div style="margin-top: 10px" class="form-text" id="notification"></div>
                         <input type="hidden" value="${productModel.id}" id="id" name="id"/>
                         <c:if test="${empty productModel}">
                             <button id="btnAddOrUpdate" style="margin-top: 10px" class="btn btn-outline-primary mb-4">Add Product</button>
-                            <button style="margin-top: 10px" class="btn btn-outline-primary mb-4" onclick="clear()">Clear</button>
                         </c:if>
                         <c:if test="${not empty productModel}">
                             <button id="btnAddOrUpdate" style="margin-top: 10px" class="btn btn-outline-primary mb-4">Update</button>
@@ -102,6 +101,7 @@
         </div>
     </section>
 </form>
+
 <script>
     $('#btnAddOrUpdate').click(function (e) {
         e.preventDefault(); // submit về 1 API
@@ -110,13 +110,26 @@
         $.each(formData, function (i, v) {
             data["" + v.name + ""] = v.value;
         });
-        var id = $('#id').val();
-        if (id == "") {
-            addProduct(data);
-            $('#formproduct')[0].reset();
-        } else {
-            updateProduct(data);
-        }
+        const ref = firebase.storage().ref();
+        const file = document.querySelector('#avatar').files[0];
+        const metadata = {
+            contentType: file.type
+        };
+        const name = file.name;
+        const uploadIMG = ref.child(name).put(file, metadata);
+        uploadIMG.then(snapshort => snapshort.ref.getDownloadURL())
+            .then(url => {
+                console.log(url);
+                data["avatar"] = url;
+                var id = $('#id').val();
+                if (id == "") {
+                    addProduct(data);
+                    $('#formproduct')[0].reset();
+                } else {
+                    updateProduct(data);
+                }
+            })
+            .catch(console.error)
     });
     function addProduct(data) {
         $.ajax({
@@ -137,7 +150,6 @@
         });
     }
     function updateProduct(data) {
-
         $.ajax({
             url: '${APIProduct}',
             type: 'PUT',
@@ -154,9 +166,6 @@
                 window.location.href = "${NewURL}?type=list&maxPageItem=2&page=1&message=error_system";
             }
         });
-    }
-    function clear(){
-        $('#formproduct')[0].reset();
     }
 </script>
 </body>

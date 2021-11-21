@@ -10,8 +10,8 @@
                 </div>
                 <div class="col-xl-6 col-lg-6 col-12">
                     <ul class="right-side">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="/trang-chu">Home</a></li>
+                        <li><a href="/shop">Shop</a></li>
                         <li>Shop Detail</li>
                     </ul>
                 </div>
@@ -24,7 +24,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-5 col-md-6 col-12">
-                <img src="<c:url value="/template/web/images/14.jpg"/>">
+                <img src="${productModel.avatar}">
             </div>
             <div class="col-lg-7 col-md-6 col-12">
                 <div class="product-detail-in">
@@ -70,11 +70,11 @@
                                 <div class="table-listing qty">
                                     <label>Quantity:</label>
                                     <div class="fill-input">
-                                        <button type="button" id="sub" class="sub cou-sub">
+                                        <button type="button"  class="subqty" onclick="Sub()">
                                             <i class="fa fa-minus" aria-hidden="true"></i>
                                         </button>
-                                        <input type="number" id="1" class="input-text qty" value="1" min="1" max="3" />
-                                        <button type="button" id="add" class="add cou-sub">
+                                        <input id="quantity" type="number" value="1" min="1" max="${productModel.quantity}" />
+                                        <button type="button" class="addqty" onclick="Add()">
                                             <i class="fa fa-plus" aria-hidden="true"></i>
                                         </button>
                                     </div>
@@ -84,8 +84,8 @@
                                     <div class="fill-input">
                                         <select class="selectpicker full">
                                             <option selected="selected" value="#">${productModel.size}</option>
-                                            <option value="#">7</option>
-                                            <option value="#">6</option>
+                                            <option value="#">${productModel.size}</option>
+                                            <option value="#">${productModel.size}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -113,7 +113,7 @@
                                                 <input type="hidden" name="price" value="${productModel.price}">
                                             </form>
                                         </li>
-                                        <li><a href="wishlist.html" class="btn"><i class="fa fa-heart" aria-hidden="true"></i></a></li>
+                                        <li><a href="/shop" class="btn"><i class="fa fa-heart" aria-hidden="true"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -125,9 +125,22 @@
     </div>
 </section>
 <script>
+    var quantity=${productModel.quantity};
     function getValue() {
-        var input=document.getElementById("1").value;
+        var input=document.getElementById("quantity").value;
         document.getElementById("qtt").value=input;
+    }
+    function Add() {
+        var input=Number(document.getElementById("quantity").value);
+        if(input<quantity){
+            document.getElementById("quantity").value=input+1;
+        }
+    }
+    function Sub() {
+        var input=Number(document.getElementById("quantity").value);
+        if(input<0){
+            document.getElementById("quantity").value=input-1;
+        }
     }
 </script>
 </body>

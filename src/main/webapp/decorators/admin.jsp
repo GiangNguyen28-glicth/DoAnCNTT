@@ -31,6 +31,8 @@
     <script src="<c:url value='/template/admin/js/jquery.2.1.1.min.js' />"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.8/firebase-storage.js"></script>
 </head>
 <body>
 <%@include file="/common/admin/header.jsp" %>
@@ -86,6 +88,18 @@
     'left-trim': true,
     'right-trim': true,
   });
+</script>
+<script type="module">
+    const firebaseConfig = {
+        apiKey: "AIzaSyCM8GPMn5mU7_B0Eg-kGiWZZ0DpVKDUZp0",
+        authDomain: "hoaiphong-4cfd9.firebaseapp.com",
+        projectId: "hoaiphong-4cfd9",
+        storageBucket: "hoaiphong-4cfd9.appspot.com",
+        messagingSenderId: "413471605092",
+        appId: "1:413471605092:web:1aa136cb962420c557ba71",
+        measurementId: "G-80ETZH4J6E"
+    };
+    firebase.initializeApp(firebaseConfig);
 </script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
       integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"

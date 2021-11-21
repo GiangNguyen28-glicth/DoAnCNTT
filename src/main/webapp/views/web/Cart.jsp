@@ -10,7 +10,7 @@
                 </div>
                 <div class="col-xl-6 col-lg-6 col-12">
                     <ul class="right-side">
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="/trang-chu">Home</a></li>
                         <li>Cart</li>
                     </ul>
                 </div>
@@ -38,18 +38,18 @@
                             <td class="text-left">
                                 <div class="seller-box align-flax w-100">
                                     <div class="seller-img">
-                                        <a href="product-detail.html" class="display-b">
-                                            <img src="<c:url value="/template/web/images/product-1.jpg"/>" alt="shoes" class="transition">
+                                        <a href="/product?productid=${item.product.id}" class="display-b">
+                                            <img src="${item.product.avatar}" alt="shoes" class="transition">
                                         </a>
                                     </div>
                                     <div class="seller-contain pl-15">
-                                        <a href="product-detail.html" class="product-name text-uppercase">${item.product.name}</a>
+                                        <a href="/product?productid=${item.product.id}" class="product-name text-uppercase">${item.product.name}</a>
                                     </div>
                                 </div>
                             </td>
                             <td><span class="price">$${item.product.price}</span></td>
                             <td>
-                                <input type="number" id="ipqtt${item.product.id}" class="input-text" value="${item.quantity}" min="1" max="10"/>
+                                <input type="number" id="ipqtt${item.product.id}" class="input-text" value="${item.quantity}" min="1" max="${item.product.quantity}"/>
                             </td>
                             <td><span class="price">${item.totalCurrencyFormat}</span></td>
                             <td>
@@ -156,7 +156,7 @@
                                 </table>
                             </div>
                             <div class="share-wishlist">
-                                <a href="checkout.html" class="btn btn-color">Proceed to checkout <i class="fa fa-angle-right"></i></a>
+                                <a href="/cart?action=checkout" class="btn btn-color">Proceed to checkout <i class="fa fa-angle-right"></i></a>
                             </div>
                         </div>
                     </div>

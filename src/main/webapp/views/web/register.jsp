@@ -1,6 +1,7 @@
 <%@include file="/common/taglib.jsp" %>
 <c:url var="APIuser" value="/api-user"/>
 <c:url var="LoginUrl" value="/dang-nhap"/>
+<c:url var="otpUrl" value="/otp"/>
 <c:url var="RegisterUrl" value="/dang-ky"/>
 <head>
     <title>Forgot password</title>
@@ -29,8 +30,7 @@
     <div class="container">
         <div class="billing-details">
             <h2 class="checkout-title text-uppercase text-center mb-30">CREATE ACCOUNT</h2>
-            <div id="notification" class="checkout-title  text-uppercase text-center mb-30">CREATE
-                ACCOUNT
+            <div id="notification" class="checkout-title  text-uppercase text-center mb-30">
             </div>
             <form class="checkout-form" id="formSubmit">
                 <div class="form-group">
@@ -115,8 +115,7 @@
       $.each(formData, function (i, v) {
         data["" + v.name + ""] = v.value;
       });
-      +
-          addUser(data);
+      addUser(data);
     }
   });
 
@@ -146,7 +145,7 @@
       dataType: 'json',
       success: function (result) {
         if (result['message'] == null) {
-          window.location.href = "${LoginUrl}?action=login&message=register_success&alert=success"
+          window.location.href = "${otpUrl}?message=registerSuccess&alert=info"
         } else {
           $('#notification').html(`
                <div class="alert alert-danger">` + result['message'] + `</div>`)
