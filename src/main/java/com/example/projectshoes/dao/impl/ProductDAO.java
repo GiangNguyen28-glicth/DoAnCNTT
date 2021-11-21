@@ -1,68 +1,104 @@
 package com.example.projectshoes.dao.impl;
 
+import com.example.projectshoes.dao.ICategoryDAO;
 import com.example.projectshoes.dao.IProductDAO;
 import com.example.projectshoes.mapper.ProductMapper;
+import com.example.projectshoes.model.CategoryModel;
 import com.example.projectshoes.model.ProductModel;
 import com.example.projectshoes.paging.Pageble;
+import com.example.projectshoes.service.ICategoryService;
+import com.example.projectshoes.utils.HibernateUtil;
+import org.hibernate.query.Query;
+import org.hibernate.Session;
 
+import javax.inject.Inject;
+import java.math.BigInteger;
 import java.util.List;
 
 public class ProductDAO extends AbstractDAO<ProductModel> implements IProductDAO {
-
+    Session session = HibernateUtil.getSessionFactory().openSession();
+    @Inject
+    ICategoryDAO categoryService;
+    public ProductDAO() {
+        setType(ProductModel.class);
+    }
 
     @Override
     public ProductModel findOne(Long id) {
-        StringBuilder sql=new StringBuilder("SELECT * FROM product Where id=?");
-        List<ProductModel> productModels= query(sql.toString(),new ProductMapper(),id);
-        return productModels.isEmpty() ?null :productModels.get(0);
+        StringBuilder sql = new StringBuilder("FROM Product p Where id=:id");
+        ProductModel productModel=new ProductModel();
+        productModel.setId(id);
+        List<ProductModel> productModels = queryHibernate(sql.toString(),productModel);
+        return productModels.isEmpty() ? null : productModels.get(0);
     }
 
     @Override
-    public Long save(ProductModel productModel) {
-        StringBuilder sql=new StringBuilder("INSERT INTO product (name,price,category_id,size,quantity,");
-        sql.append("createddate,modifieddate, createdby,modifiedby)");
-        sql.append(" VALUES (?,?,?,?,?,?,?,?,?)");
-        return insert(sql.toString(),productModel.getName(),productModel.getPrice(),productModel.getCategoryId(),
-                productModel.getSize(),productModel.getQuantity(),productModel.getCreatedDate(),productModel.getModifiedDate(),productModel.getCreatedBy(),productModel.getModifiedBy());
-    }
-
-    @Override
-    public List<ProductModel> findAll(Pageble pageble) {
-        StringBuilder sql=new StringBuilder("SELECT * FROM product");
-        if (pageble.getOffset() != null && pageble.getLimit() != null) {
-            sql.append(" LIMIT "+pageble.getOffset()+", "+pageble.getLimit()+"");
+    public Long saveProduct(ProductModel productModel) {
+        if(productModel.getCategoryId()!=null){
+            CategoryModel categoryModel=categoryService.findByCategoryID(productModel.getCategoryId());
+            productModel.setCategory(categoryModel);
         }
-        return query(sql.toString(),new ProductMapper());
+        return save(productModel);
     }
+
     @Override
-    public List<ProductModel> findbyCategoryID(Long id) {
-        return null;
+    public List<ProductModel> findAll(Pageble pageble,String key) {
+        ProductModel productModel=new ProductModel();
+        String query="";
+        if(key==null){
+            query="FROM Product p";
+        }
+        else {
+            query="FROM Product as p where p.name like '%"+key+"%'";
+        }
+        Query q = session.createQuery(query);
+        q.setFirstResult(pageble.getOffset());
+        q.setMaxResults(pageble.getLimit());
+        productModel.setListResult(q.getResultList());
+        return productModel.getListResult();
     }
+
     @Override
-    public void delete(long id) {
-        StringBuilder sql=new StringBuilder("DELETE FROM product WHERE id = ?");
-        delete(sql.toString(),id);
+    public List<ProductModel> findbyCategory(Pageble pageble,String code) {
+        ProductModel productModel=new ProductModel();
+        StringBuilder query= new StringBuilder("select u From Product u inner join u.category t");
+        query.append(" where t.code='"+code+"'");
+        Query q = session.createQuery(query.toString());
+        q.setFirstResult(pageble.getOffset());
+        q.setMaxResults(pageble.getLimit());
+        productModel.setListResult(q.getResultList());
+        return productModel .getListResult();
+    }
+
+    @Override
+    public List<ProductModel> Sort(String sql,String categorycode) {
+        ProductModel productModel=new ProductModel();
+        return queryHibernate(sql,productModel);
+    }
+
+    @Override
+    public void deleteProduct(long id) {
+        ProductModel productModel = findById(id);
+        delete(productModel);
     }
 
     @Override
     public void update(ProductModel productModel) {
-        StringBuilder sql=new StringBuilder("UPDATE product set name=?,price=?,category_id=?,size=?,quantity=?,");
-        sql.append("modifieddate=?,modifiedby=? WHERE id=?");
-        update(sql.toString(),productModel.getName(),productModel.getPrice(),productModel.getCategoryId(),
-                productModel.getSize(),productModel.getQuantity(),productModel.getModifiedDate(),productModel.getModifiedBy(),productModel.getId());
+        saveProduct(productModel);
     }
-    @Override
-    public List<ProductModel> PageProduct(int page) {
-        if(page<1){
-            page=1;
-        }
-        int offset=(page-1)*5;
-        StringBuilder sql=new StringBuilder("select * from product LIMIT 5 OFFSET ?");
-        return query(sql.toString(),new ProductMapper(),offset);
-    }
+
     @Override
     public int getTotalItem() {
-        String sql="SELECT count(*) FROM product";
-        return count(sql);
+        Query query = session.createSQLQuery("select count(*) from Product p");
+        List<BigInteger> count1 =query.list();
+        int count=count1.get(0).intValue();
+        return count;
+    }
+    @Override
+    public int getTotalItemByCategory(String code) {
+        Query q = session.createQuery("select count(*) From Product u inner join u.category t where t.code='"+code+"'");
+        List<Long> count1 =q.list();
+        int count=count1.get(0).intValue();
+        return count;
     }
 }
