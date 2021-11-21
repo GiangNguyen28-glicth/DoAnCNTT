@@ -15,15 +15,15 @@ public class SetPasswordController extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException {
+          throws ServletException, IOException {
+    String url = "/views/web/404.jsp";
     if (SystemConstant.ID != null) {
       if (SystemConstant.FLAG) {
         Cookie cookie = new Cookie("email", SystemConstant.ID.toString());
         cookie.setMaxAge(60 * 5);
         SystemConstant.FLAG = false;
         resp.addCookie(cookie);
-        RequestDispatcher rq = req.getRequestDispatcher("/views/web/newpassword.jsp");
-        rq.forward(req, resp);
+        url = "/views/web/newpassword.jsp";
       } else {
         Cookie[] cookies = req.getCookies();
         boolean flag = false;
@@ -33,16 +33,11 @@ public class SetPasswordController extends HttpServlet {
           }
         }
         if (flag) {
-          RequestDispatcher rq = req.getRequestDispatcher("/views/web/newpassword.jsp");
-          rq.forward(req, resp);
-        } else {
-          RequestDispatcher rq = req.getRequestDispatcher("/views/web/404.jsp");
-          rq.forward(req, resp);
+          url = "/views/web/newpassword.jsp";
         }
       }
-    } else {
-      RequestDispatcher rq = req.getRequestDispatcher("/views/web/404.jsp");
-      rq.forward(req, resp);
     }
+    RequestDispatcher rq = req.getRequestDispatcher(url);
+    rq.forward(req, resp);
   }
 }

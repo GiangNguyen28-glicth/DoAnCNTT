@@ -16,18 +16,6 @@ import java.io.IOException;
 
 @WebServlet(urlPatterns = "/admin-delivery")
 public class DeliveryController extends HttpServlet {
-//    @Inject
-//    IDeliveryService deliveryService;
-//
-//    @Override
-//    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        DeliveryModel deliveryModel= FormUtil.toModel(DeliveryModel.class,req);
-//        RequestDispatcher rd=req.getRequestDispatcher("/views/admin/LIST/ListDelivery.jsp");
-//        deliveryModel.setListResult(deliveryService.findAll());
-//        req.setAttribute("deliveryModel",deliveryModel);
-//        rd.forward(req,resp);
-//    }
-
     @Inject
     IDeliveryService deliveryService;
     @Override

@@ -33,7 +33,7 @@ public class CategoryAPI extends HttpServlet {
         UserModel userModel=(UserModel) SessionUtil.getInstance().getValue(req,"USERMODEL");
         categoryModel.setCreatedBy(userModel.getUsername());
         categoryModel.setModifiedBy(userModel.getUsername());
-        categoryService.save(categoryModel);
+        categoryService.saveCategory(categoryModel);
         mapper.writeValue(resp.getOutputStream(),categoryModel);
     }
 }

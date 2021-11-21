@@ -26,6 +26,7 @@ public class ProductController extends HttpServlet {
         ProductModel productModel = FormUtil.toModel(ProductModel.class,req);
         String url="";
         String action=req.getParameter("action");
+        String key=req.getParameter("key");
         if(productModel.getPage()==null||productModel.getPage()<1){
             productModel.setPage(1);
         }
@@ -34,7 +35,7 @@ public class ProductController extends HttpServlet {
             productModel.setTotalItem(productService.getTotalItem());
             productModel.setTotalPage((int) Math.ceil((double) productModel.getTotalItem() / productModel.getMaxPageItem()));
             url="/views/admin/LIST/ListProduct.jsp";
-            productModel.setListResult(productService.findAll(pageble));
+            productModel.setListResult(productService.findAll(pageble,key));
             req.setAttribute("productModel",productModel);
         }
         else if(action.equals("insert")){

@@ -2,10 +2,12 @@ package com.example.projectshoes.controller.web;
 
 import com.example.projectshoes.constant.SystemConstant;
 import com.example.projectshoes.model.ProductModel;
+import com.example.projectshoes.model.RoleModel;
 import com.example.projectshoes.model.UserModel;
 import com.example.projectshoes.paging.PageRequest;
 import com.example.projectshoes.paging.Pageble;
 import com.example.projectshoes.service.IProductService;
+import com.example.projectshoes.service.IRoleService;
 import com.example.projectshoes.service.IUserService;
 import com.example.projectshoes.utils.FormUtil;
 import com.example.projectshoes.utils.SessionUtil;
@@ -23,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 public class HomeController extends HttpServlet {
 
   @Inject
+  IRoleService roleService;
+  @Inject
   IUserService userService;
   @Inject
   IProductService productService;
@@ -30,9 +34,15 @@ public class HomeController extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException {
+          throws ServletException, IOException {
     String action = req.getParameter("action");
+    String key=req.getParameter("key");
     if (action != null && action.equals("login")) {
+      if (SystemConstant.checkRemember) {
+        req.setAttribute("checked", true);
+        req.setAttribute("rememberUsername", SystemConstant.rememberUsername);
+        req.setAttribute("rememberPassword", SystemConstant.rememberPassword);
+      }
       String message = req.getParameter("message");
       String alert = req.getParameter("alert");
       if (message != null && alert != null) {
@@ -45,10 +55,10 @@ public class HomeController extends HttpServlet {
       SessionUtil.getInstance().removeValue(req, "USERMODEL");
       resp.sendRedirect(req.getContextPath() + "/trang-chu");
     } else {
-      ProductModel productModel=new ProductModel();
-      Pageble pageble=new PageRequest(1,10);
-      productModel.setListResult(productService.findAll(pageble));
-      req.setAttribute("productModel",productModel);
+      ProductModel productModel = new ProductModel();
+      Pageble pageble = new PageRequest(1, 10);
+      productModel.setListResult(productService.findAll(pageble,key));
+      req.setAttribute("productModel", productModel);
       String userSuccess = req.getParameter("user");
       req.setAttribute("user", userSuccess);
       RequestDispatcher rd = req.getRequestDispatcher("/views/web/home.jsp");
@@ -58,14 +68,23 @@ public class HomeController extends HttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException {
+          throws ServletException, IOException {
     String action = req.getParameter("action");
     if (action != null && action.equals("login")) {
       UserModel userModel = FormUtil.toModel(UserModel.class, req);
+      if (userModel.getChecked() != null) {
+        SystemConstant.checkRemember = true;
+        SystemConstant.rememberUsername = userModel.getUsername();
+        SystemConstant.rememberPassword = userModel.getPassword();
+      } else {
+        SystemConstant.checkRemember = false;
+      }
       userModel = userService.findByUsernameAndPassword(
-          userModel.getUsername(), userModel.getPassword()
+              userModel.getUsername(), userModel.getPassword()
       );
       if (userModel != null) {
+        RoleModel roleModel = roleService.findRoleById(userModel.getRoleId());
+        userModel.setRole(roleModel);
         SessionUtil.getInstance().putValue(req, "USERMODEL", userModel);
         if (userModel.getRole().getCode().equals(SystemConstant.USER)) {
           resp.sendRedirect(req.getContextPath() + "/trang-chu");
@@ -74,7 +93,7 @@ public class HomeController extends HttpServlet {
         }
       } else {
         resp.sendRedirect(req.getContextPath()
-            + "/dang-nhap?action=login&message=username_password_invalid&alert=danger");
+                + "/dang-nhap?action=login&message=username_password_invalid&alert=danger");
       }
     }
   }

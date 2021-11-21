@@ -13,7 +13,7 @@ public class ErorrPageController extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException {
+          throws ServletException, IOException {
     RequestDispatcher rq = req.getRequestDispatcher("/views/web/404.jsp");
     rq.forward(req, resp);
   }

@@ -19,7 +19,7 @@ public class LoginAPIController extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException {
+          throws ServletException, IOException {
     String username = req.getParameter("id");
     if (username != null) {
       UserModel userModel = userService.findByUserName(username);

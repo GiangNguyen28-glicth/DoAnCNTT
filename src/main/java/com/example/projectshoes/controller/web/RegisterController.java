@@ -14,7 +14,7 @@ public class RegisterController extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException {
+          throws ServletException, IOException {
     if (ResponseMessage.getInstance().getMessage() != null) {
       req.setAttribute("message", ResponseMessage.getInstance().getMessage());
     }
