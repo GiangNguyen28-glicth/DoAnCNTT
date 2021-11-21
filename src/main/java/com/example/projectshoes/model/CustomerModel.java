@@ -1,22 +1,33 @@
 package com.example.projectshoes.model;
 
-public class CustomerModel extends AbstractModel<CustomerModel> {
+import java.io.Serializable;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
-  private Long userId;
+@Entity(name = "Customer")
+@Table(name = "customer")
+public class CustomerModel extends AbstractModel<CustomerModel> implements Serializable {
+
+  @Column(name = "firstname")
   private String firstName;
+  @Column(name = "lastname")
   private String lastName;
+  @Column(name = "gender")
   private String gender;
+  @Column(name = "phone")
   private String phone;
+  @Column(name = "address")
   private String address;
+  @Column(name = "content")
   private String content;
-
-  public Long getUserId() {
-    return userId;
-  }
-
-  public void setUserId(Long userId) {
-    this.userId = userId;
-  }
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
+  private UserModel user;
 
   public String getFirstName() {
     return firstName;
@@ -64,5 +75,14 @@ public class CustomerModel extends AbstractModel<CustomerModel> {
 
   public void setContent(String content) {
     this.content = content;
+  }
+
+
+  public UserModel getUser() {
+    return user;
+  }
+
+  public void setUser(UserModel user) {
+    this.user = user;
   }
 }

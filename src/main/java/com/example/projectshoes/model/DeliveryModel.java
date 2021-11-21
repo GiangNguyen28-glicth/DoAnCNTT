@@ -1,14 +1,26 @@
 package com.example.projectshoes.model;
 
 
+import java.io.Serializable;
 import java.sql.Date;
+import javax.persistence.*;
 
-public class DeliveryModel extends AbstractModel<DeliveryModel> {
+@Entity(name = "Delivery")
+@Table(name = "delivery")
+public class DeliveryModel extends AbstractModel<DeliveryModel> implements Serializable {
 
+  @Column(name = "shipper")
   private String shipper;
+  @Column(name = "status")
   private String status;
+  @Column(name = "deliverydate")
   private Date deliveryDate;
+  @Column(name = "name")
   private String name;
+
+  @OneToOne(fetch = FetchType.EAGER,mappedBy = "delivery")
+  private SaledetailModel saleDetail;
+
 
   public String getName() {
     return name;
