@@ -3,77 +3,82 @@ package com.example.projectshoes.dao.impl;
 import com.example.projectshoes.dao.IDeliveryDAO;
 import com.example.projectshoes.mapper.DeliveryMapper;
 import com.example.projectshoes.model.DeliveryModel;
+import com.example.projectshoes.utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
+import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class DeliveryDAO extends AbstractDAO<DeliveryModel> implements IDeliveryDAO {
+    public DeliveryDAO() {
+        setType(DeliveryModel.class);
+    }
 
     @Override
     public List<DeliveryModel> findAll() {
-        StringBuilder sql = new StringBuilder("SELECT * FROM Delivery");
-        return query(sql.toString(),new DeliveryMapper());
+        StringBuilder sql = new StringBuilder("from Delivery d");
+        DeliveryModel deliveryModel=new DeliveryModel();
+        return queryHibernate(sql.toString(),deliveryModel);
     }
-
     @Override
     public DeliveryModel findOne(Long id) {
-        StringBuilder sql=new StringBuilder("SELECT * FROM Delivery Where id=?");
-        List<DeliveryModel> deliveryModels= query(sql.toString(),new DeliveryMapper(),id);
-        return deliveryModels.isEmpty() ?null :deliveryModels.get(0);
+        StringBuilder sql = new StringBuilder("FROM Delivery d Where id=:id");
+        DeliveryModel deliveryModel=new DeliveryModel();
+        deliveryModel.setId(id);
+        List<DeliveryModel> deliveryModels = queryHibernate(sql.toString(),deliveryModel);
+        return deliveryModels.isEmpty() ? null : deliveryModels.get(0);
     }
 
-
     @Override
-    public Long save(DeliveryModel deliveryModel) {
-        StringBuilder sql=new StringBuilder("INSERT INTO Delivery (name, shipper, delivery_date, status,createddate, createdby,modifiedby,modifieddate)");
-        sql.append(" VALUES(?,?,?,?,?,?,?,?)");
-        return insert(sql.toString(),deliveryModel.getName(),deliveryModel.getShipper(),deliveryModel.getDeliveryDate(),
-                deliveryModel.getStatus(), deliveryModel.getCreatedDate(), deliveryModel.getCreatedBy(),
-                deliveryModel.getModifiedBy(), deliveryModel.getModifiedDate());
+    public Long saveDelivery(DeliveryModel deliveryModel) {
+        deliveryModel.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        deliveryModel.setModifiedDate(new Timestamp(System.currentTimeMillis()));
+        return save(deliveryModel);
     }
 
     @Override
     public DeliveryModel findByDeliveryName(String name) {
-        StringBuilder sql=new StringBuilder("SELECT * FROM Delivery Where name=?");
-        sql.append(" VALUES(?)");
-        List<DeliveryModel> delivery= query(sql.toString(),new DeliveryMapper(),name);
-        return  delivery.isEmpty() ? null :delivery.get(0);
+        StringBuilder sql = new StringBuilder("FROM Delivery Where name=:name");
+        DeliveryModel deliveryModel=new DeliveryModel();
+        deliveryModel.setName(name);
+        List<DeliveryModel> delivery = queryHibernate(sql.toString(),deliveryModel);
+        return delivery.isEmpty() ? null : delivery.get(0);
     }
 
     @Override
     public DeliveryModel findByDeliveryID(Long id) {
-        StringBuilder sql=new StringBuilder("SELECT * FROM Delivery Where id=?");
-        sql.append(" VALUES(?)");
-        List<DeliveryModel> delivery= query(sql.toString(),new DeliveryMapper(),id);
-        return  delivery.isEmpty() ? null :delivery.get(0);
+        return findById(id);
     }
 
     @Override
-    public void delete(long id) {
-        StringBuilder sql=new StringBuilder("DELETE FROM Delivery WHERE id = ?");
-        update(sql.toString(),id);
+    public void deleteDelivery(long id) {
+        DeliveryModel deliveryModel = findById(id);
+        delete(deliveryModel);
     }
 
     @Override
     public void update(DeliveryModel deliveryModel) {
-        StringBuilder sql=new StringBuilder("UPDATE Delivery set name=?, shipper=?, delivery_date=?, status=?,");
-        sql.append("modifieddate=?,modifiedby=? WHERE id=?");
-        update(sql.toString(),deliveryModel.getName(),deliveryModel.getShipper(),deliveryModel.getDeliveryDate(),
-                deliveryModel.getStatus(),deliveryModel.getModifiedDate(),deliveryModel.getModifiedBy(),deliveryModel.getId());
+        saveDelivery(deliveryModel);
     }
 
     @Override
     public List<DeliveryModel> PageDelivery(int page) {
-        if(page<1){
-            page=1;
+        if (page < 1) {
+            page = 1;
         }
-        int offset=(page-1)*5;
-        StringBuilder sql=new StringBuilder("select * from Delivery LIMIT 5 OFFSET ?");
-        return query(sql.toString(),new DeliveryMapper(),offset);
+        int offset = (page - 1) * 5;
+        StringBuilder sql = new StringBuilder("select * from Delivery LIMIT 5 OFFSET ?");
+        return query(sql.toString(), new DeliveryMapper(), offset);
     }
 
     @Override
     public int getTotalItem() {
-        String sql="SELECT count(*) FROM Delivery";
-        return count(sql);
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createSQLQuery("select count(*) from Delivery d");
+        List<BigInteger> count1 =query.list();
+        int count=count1.get(0).intValue();
+        return count;
     }
 }

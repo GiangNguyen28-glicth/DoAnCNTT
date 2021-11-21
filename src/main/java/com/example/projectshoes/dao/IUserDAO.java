@@ -1,12 +1,10 @@
 package com.example.projectshoes.dao;
 
-import com.example.projectshoes.model.CategoryModel;
 import com.example.projectshoes.model.UserModel;
 import java.util.List;
 
 public interface IUserDAO extends GenericDAO<UserModel> {
 
-  UserModel findById(Long id);
 
   UserModel findByUsernameAndPassword(String username, String password);
 
@@ -14,9 +12,9 @@ public interface IUserDAO extends GenericDAO<UserModel> {
 
   UserModel findByEmail(String email);
 
-  UserModel findByUserID(Long id);
+  UserModel findUserById(Long id);
 
-  Long save(UserModel userModel);
+  Long insert(UserModel userModel);
 
   void update(UserModel userModel);
 

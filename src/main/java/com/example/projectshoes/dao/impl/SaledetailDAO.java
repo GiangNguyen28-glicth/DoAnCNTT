@@ -2,32 +2,46 @@ package com.example.projectshoes.dao.impl;
 
 import com.example.projectshoes.dao.ISaledetailDAO;
 import com.example.projectshoes.mapper.SaledetailMapper;
+import com.example.projectshoes.model.CategoryModel;
+import com.example.projectshoes.model.DeliveryModel;
+import com.example.projectshoes.model.ProductModel;
 import com.example.projectshoes.model.SaledetailModel;
+import com.example.projectshoes.service.ICategoryService;
+import com.example.projectshoes.service.IDeliveryService;
+import com.example.projectshoes.utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
+import javax.inject.Inject;
+import java.math.BigInteger;
 import java.util.List;
 
 public class SaledetailDAO extends AbstractDAO<SaledetailModel> implements ISaledetailDAO {
-    @Override
-    public SaledetailModel findOne(Long id) {
-        StringBuilder sql=new StringBuilder("SELECT * FROM Saledetail Where id=?");
-        List<SaledetailModel> saledetailModels= query(sql.toString(),new SaledetailMapper(),id);
-        return saledetailModels.isEmpty() ?null :saledetailModels.get(0);
+    public SaledetailDAO() {
+        setType(SaledetailModel.class);
     }
 
     @Override
-    public Long save(SaledetailModel saledetailModel) {
-        StringBuilder sql=new StringBuilder("INSERT INTO Saledetail (user_id, product_id, delivery_id, quantity, total, status_delivery,");
-        sql.append("createddate,modifieddate, createdby,modifiedby)");
-        sql.append(" VALUES (?,?,?,?,?,?,?,?,?,?)");
-        return insert(sql.toString(),saledetailModel.getUserId(),saledetailModel.getProductId(),saledetailModel.getDeliveryId(),
-                saledetailModel.getQuantity(), saledetailModel.getTotal(),saledetailModel.getStatus_delivery(),
-                saledetailModel.getCreatedDate(),saledetailModel.getModifiedDate(),saledetailModel.getCreatedBy(),saledetailModel.getModifiedBy());
+    public SaledetailModel findOne(Long id) {
+        StringBuilder sql = new StringBuilder("FROM Saledetail s Where s.id=:id");
+        SaledetailModel saledetailModel=new SaledetailModel();
+        saledetailModel.setId(id);
+        List<SaledetailModel> saledetailModels = queryHibernate(sql.toString(),saledetailModel);
+        return saledetailModels.isEmpty() ? null : saledetailModels.get(0);
     }
+
+    @Override
+    public Long saveSaledetail(SaledetailModel saledetailModel) {
+        return save(saledetailModel);
+    }
+
 
     @Override
     public List<SaledetailModel> findAll() {
-        StringBuilder sql=new StringBuilder("SELECT * FROM Saledetail");
-        return query(sql.toString(),new SaledetailMapper());
+        StringBuilder sql = new StringBuilder("FROM Saledetail s");
+        SaledetailModel saledetailModel=new SaledetailModel();
+        return queryHibernate(sql.toString(), saledetailModel);
+
     }
 
     @Override
@@ -47,33 +61,41 @@ public class SaledetailDAO extends AbstractDAO<SaledetailModel> implements ISale
 
 
     @Override
-    public void delete(long id) {
-        StringBuilder sql=new StringBuilder("DELETE FROM Saledetail WHERE id = ?");
-        update(sql.toString(),id);
+    public void deleteSaledetail(long id) {
+        SaledetailModel saledetailModel = findById(id);
+        delete(saledetailModel);
     }
 
     @Override
     public void update(SaledetailModel saledetailModel) {
-        StringBuilder sql=new StringBuilder("UPDATE Saledetail set user_id=?, product_id=?, delivery_id=?,total=?, quantity=?, status_delivery=?,");
-        sql.append("modifieddate=?,modifiedby=? WHERE id=?");
-        update(sql.toString(),saledetailModel.getUserId(),saledetailModel.getProductId(),saledetailModel.getDeliveryId(),
-                saledetailModel.getTotal(),saledetailModel.getQuantity(),saledetailModel.getStatus_delivery(),
-                saledetailModel.getModifiedDate(),saledetailModel.getModifiedBy(),saledetailModel.getId());
+        update(saledetailModel);
     }
 
     @Override
     public List<SaledetailModel> PageSaledetail(int page) {
-        if(page<1){
-            page=1;
+        if (page < 1) {
+            page = 1;
         }
-        int offset=(page-1)*5;
-        StringBuilder sql=new StringBuilder("select * from Saledetail LIMIT 5 OFFSET ?");
-        return query(sql.toString(),new SaledetailMapper(),offset);
+        int offset = (page - 1) * 5;
+        StringBuilder sql = new StringBuilder("select * from Saledetail LIMIT 5 OFFSET ?");
+        return query(sql.toString(), new SaledetailMapper(), offset);
     }
 
     @Override
     public int getTotalItem() {
-        String sql="SELECT count(*) FROM Saledetail";
-        return count(sql);
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createSQLQuery("select count(*) from Saledetail s");
+        List<BigInteger> count1 =query.list();
+        int count=count1.get(0).intValue();
+        return count;
+    }
+
+    @Override
+    public SaledetailModel findbyCode(Long code) {
+        StringBuilder sql = new StringBuilder("FROM Saledetail s Where s.code=:code");
+        SaledetailModel saledetailModel=new SaledetailModel();
+        saledetailModel.setCode(code);
+        List<SaledetailModel> saledetailModels = queryHibernate(sql.toString(),saledetailModel);
+        return saledetailModels.isEmpty() ? null : saledetailModels.get(0);
     }
 }

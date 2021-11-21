@@ -4,37 +4,36 @@ package com.example.projectshoes.dao.impl;
 import com.example.projectshoes.dao.ICategoryDAO;
 import com.example.projectshoes.mapper.CategoryMapper;
 import com.example.projectshoes.model.CategoryModel;
-
 import java.util.List;
 
 public class CategoryDAO extends AbstractDAO<CategoryModel> implements ICategoryDAO {
+
+    public CategoryDAO() {
+        setType(CategoryModel.class);
+    }
     @Override
     public List<CategoryModel> findAll() {
-        StringBuilder sql= new StringBuilder("SELECT * FROM category");
-        return query(sql.toString(),new CategoryMapper());
+        StringBuilder sql = new StringBuilder("from Category c");
+        CategoryModel categoryModel=new CategoryModel();
+        return queryHibernate(sql.toString(),categoryModel);
     }
 
     @Override
-    public Long save(CategoryModel categoryModel) {
-        StringBuilder sql=new StringBuilder("INSERT INTO category (code,createddate,modifieddate,createdby,modifiedby)");
-        sql.append(" VALUES(?,?,?,?,?)");
-        return insert(sql.toString(),categoryModel.getCode(),categoryModel.getCreatedDate(),categoryModel.getModifiedDate(),
-                categoryModel.getCreatedBy(),categoryModel.getModifiedBy());
+    public Long saveCategory(CategoryModel categoryModel) {
+        return save(categoryModel);
     }
 
     @Override
     public CategoryModel findByCategoryName(String code) {
-        StringBuilder sql=new StringBuilder("SELECT * FROM category Where code=?");
-        sql.append(" VALUES(?)");
-        List<CategoryModel> category= query(sql.toString(),new CategoryMapper(),code);
-        return  category.isEmpty() ? null :category.get(0);
+        StringBuilder sql = new StringBuilder("FROM category Where code=:code");
+        CategoryModel categoryModel=new CategoryModel();
+        categoryModel.setCode(code);
+        List<CategoryModel> category = queryHibernate(sql.toString(),categoryModel);
+        return category.isEmpty() ? null : category.get(0);
     }
 
     @Override
     public CategoryModel findByCategoryID(Long id) {
-        StringBuilder sql=new StringBuilder("SELECT * FROM category Where id=?");
-        sql.append(" VALUES(?)");
-        List<CategoryModel> category= query(sql.toString(),new CategoryMapper(),id);
-        return  category.isEmpty() ? null :category.get(0);
+        return findById(id);
     }
 }

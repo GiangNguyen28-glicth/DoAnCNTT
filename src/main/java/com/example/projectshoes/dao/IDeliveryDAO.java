@@ -7,10 +7,10 @@ import java.util.List;
 public interface IDeliveryDAO extends GenericDAO<DeliveryModel>{
     List<DeliveryModel> findAll();
     DeliveryModel findOne(Long id);
-    Long save(DeliveryModel deliveryModel);
+    Long saveDelivery(DeliveryModel deliveryModel);
     DeliveryModel findByDeliveryName(String name);
     DeliveryModel findByDeliveryID(Long id);
-    void delete(long id);
+    void deleteDelivery(long id);
     void update(DeliveryModel deliveryModel);
     List<DeliveryModel> PageDelivery(int page);
     int getTotalItem();

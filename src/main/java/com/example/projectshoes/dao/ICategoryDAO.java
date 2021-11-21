@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ICategoryDAO extends GenericDAO<CategoryModel> {
     List<CategoryModel> findAll();
-    Long save(CategoryModel categoryModel);
+    Long saveCategory(CategoryModel categoryModel);
     CategoryModel findByCategoryName(String code);
     CategoryModel findByCategoryID(Long id);
 }
