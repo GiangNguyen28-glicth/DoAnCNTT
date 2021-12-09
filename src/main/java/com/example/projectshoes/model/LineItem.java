@@ -1,4 +1,4 @@
-package com.example.projectshoes.controller.Cart;
+package com.example.projectshoes.model;
 
 import com.example.projectshoes.model.ProductModel;
 
@@ -24,7 +24,7 @@ public class LineItem {
     public void setProduct(ProductModel product) {
         this.product = product;
     }
-    public double getTotal(){
+    public float getTotal(){
         return product.getPrice()*quantity;
     }
     public LineItem(){ }

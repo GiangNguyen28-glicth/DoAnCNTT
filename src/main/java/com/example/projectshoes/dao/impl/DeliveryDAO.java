@@ -9,6 +9,7 @@ import org.hibernate.query.Query;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 public class DeliveryDAO extends AbstractDAO<DeliveryModel> implements IDeliveryDAO {
@@ -33,7 +34,6 @@ public class DeliveryDAO extends AbstractDAO<DeliveryModel> implements IDelivery
 
     @Override
     public Long saveDelivery(DeliveryModel deliveryModel) {
-        deliveryModel.setCreatedDate(new Timestamp(System.currentTimeMillis()));
         deliveryModel.setModifiedDate(new Timestamp(System.currentTimeMillis()));
         return save(deliveryModel);
     }
@@ -80,5 +80,18 @@ public class DeliveryDAO extends AbstractDAO<DeliveryModel> implements IDelivery
         List<BigInteger> count1 =query.list();
         int count=count1.get(0).intValue();
         return count;
+    }
+
+    @Override
+    public DeliveryModel getbyTime(Timestamp date, String phonenumber, String fullname, String address) {
+        StringBuilder sql=new StringBuilder("FROM Delivery where createdDate=:createdDate and phonenumber=:phonenumber");
+        sql.append(" and fullname=:fullname");
+        DeliveryModel deliveryModel=new DeliveryModel();
+        deliveryModel.setCreatedDate(date);
+        deliveryModel.setFullname(fullname);
+        deliveryModel.setPhonenumber(phonenumber);
+        deliveryModel.setAddress(address);
+        List<DeliveryModel> delivery = queryHibernate(sql.toString(),deliveryModel);
+        return delivery.isEmpty() ? null : delivery.get(0);
     }
 }

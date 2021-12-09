@@ -1,6 +1,8 @@
 package com.example.projectshoes.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity(name = "Product")
@@ -36,13 +38,17 @@ public class ProductModel extends AbstractModel<ProductModel> implements Seriali
   @JoinColumn(name = "category_id")
   private CategoryModel category;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  private StockModel stock;
+  @OneToMany(mappedBy = "product",
+          cascade = CascadeType.ALL,
+          orphanRemoval = true)
+  private List<SaledetailModel> saledetails = new ArrayList<>();
 
-  @OneToOne(fetch = FetchType.EAGER,mappedBy = "product")
-  private SaledetailModel saleDetail;
-
-
+  public List<SaledetailModel> getSaledetails() {
+    return saledetails;
+  }
+  public void setSaledetails(List<SaledetailModel> saledetails) {
+    this.saledetails = saledetails;
+  }
   public CategoryModel getCategory() {
     return category;
   }
@@ -92,19 +98,4 @@ public class ProductModel extends AbstractModel<ProductModel> implements Seriali
     this.categoryId = categoryId;
   }
 
-  public StockModel getStock() {
-    return stock;
-  }
-
-  public void setStock(StockModel stock) {
-    this.stock = stock;
-  }
-
-  public SaledetailModel getSaleDetail() {
-    return saleDetail;
-  }
-
-  public void setSaleDetail(SaledetailModel saleDetail) {
-    this.saleDetail = saleDetail;
-  }
 }

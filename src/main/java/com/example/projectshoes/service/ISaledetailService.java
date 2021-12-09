@@ -13,4 +13,5 @@ public interface ISaledetailService {
     List<SaledetailModel> pageProduct(int page);
     int getTotalItem();
     List<SaledetailModel> gettop3();
+    void deletebyProductId(long[] ids);
 }

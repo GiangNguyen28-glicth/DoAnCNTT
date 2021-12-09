@@ -2,14 +2,12 @@ package com.example.projectshoes.api.admin;
 import com.example.projectshoes.constant.SystemConstant;
 import com.example.projectshoes.model.ProductModel;
 import com.example.projectshoes.model.UserModel;
-import com.example.projectshoes.paging.PageRequest;
-import com.example.projectshoes.paging.Pageble;
 import com.example.projectshoes.service.ICategoryService;
 import com.example.projectshoes.service.IProductService;
+import com.example.projectshoes.service.ISaledetailService;
 import com.example.projectshoes.utils.HttpUtil;
 import com.example.projectshoes.utils.SessionUtil;
 import org.codehaus.jackson.map.ObjectMapper;
-
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,6 +21,8 @@ public class ProductAPI extends HttpServlet {
     IProductService productService;
     @Inject
     ICategoryService categoryService;
+    @Inject
+    ISaledetailService saledetailService;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ObjectMapper mapper=new ObjectMapper();
@@ -31,11 +31,6 @@ public class ProductAPI extends HttpServlet {
         String keyvalue=req.getParameter("keyvalue");
         String categorycode=req.getParameter("categorycode");
         ProductModel productModel=new ProductModel();
-//        String key=req.getParameter("key");
-//        String category=req.getParameter("categorycode");
-//        Pageble pageble = new PageRequest(productModel.getPage(), productModel.getMaxPageItem());
-//
-//        productModel.setTotalPage((int) Math.ceil((double) productModel.getTotalItem() / productModel.getMaxPageItem()));
         productModel.setListResult(productService.Sort(keyvalue,categorycode));
         SystemConstant.productModel=productModel;
         SystemConstant.FLAGSORT=true;
@@ -61,6 +56,7 @@ public class ProductAPI extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
         ProductModel productModel =  HttpUtil.of(req.getReader()).toModel(ProductModel.class);
+        saledetailService.deletebyProductId(productModel.getIds());
         productService.deleteProduct(productModel.getIds());
         mapper.writeValue(resp.getOutputStream(), "{}");
     }

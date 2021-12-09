@@ -1,18 +1,12 @@
 package com.example.projectshoes.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
+
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NaturalId;
@@ -41,9 +35,19 @@ public class UserModel extends AbstractModel<UserModel> implements Serializable 
   @OneToOne(mappedBy = "user")
   private CustomerModel customer;
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "user")
-  private SaledetailModel saleDetail;
+  @OneToMany(mappedBy = "user",
+          cascade = javax.persistence.CascadeType.ALL,
+          orphanRemoval = true)
 
+  private List<SaledetailModel> saledetails = new ArrayList<>();
+
+  public List<SaledetailModel> getSaledetails() {
+    return saledetails;
+  }
+
+  public void setSaledetails(List<SaledetailModel> saledetails) {
+    this.saledetails = saledetails;
+  }
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "user_role",
@@ -131,13 +135,6 @@ public class UserModel extends AbstractModel<UserModel> implements Serializable 
     this.customer = customer;
   }
 
-  public SaledetailModel getSaleDetail() {
-    return saleDetail;
-  }
-
-  public void setSaleDetail(SaledetailModel saleDetail) {
-    this.saleDetail = saleDetail;
-  }
 
   public String getStatus() {
     return status;
@@ -157,7 +154,7 @@ public class UserModel extends AbstractModel<UserModel> implements Serializable 
         ", avatar='" + avatar + '\'' +
         ", roleId=" + roleId +
         ", customer=" + customer +
-        ", saleDetail=" + saleDetail +
+        ", saleDetail=" + saledetails +
         ", roles=" + roles +
         ", role=" + role +
         '}';

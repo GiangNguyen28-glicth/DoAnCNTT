@@ -3,6 +3,8 @@ package com.example.projectshoes.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity(name = "Delivery")
@@ -17,10 +19,27 @@ public class DeliveryModel extends AbstractModel<DeliveryModel> implements Seria
   private Date deliveryDate;
   @Column(name = "name")
   private String name;
+  @Column(name = "address")
+  private String address;
 
-  @OneToOne(fetch = FetchType.EAGER,mappedBy = "delivery")
-  private SaledetailModel saleDetail;
+  @Column(name = "phonenumber")
+  private String phonenumber;
 
+  @Column(name = "fullname")
+  private String fullname;
+
+  @OneToMany(mappedBy = "delivery",
+          cascade = CascadeType.ALL,
+          orphanRemoval = true)
+  private List<SaledetailModel> saledetails = new ArrayList<>();
+
+  public List<SaledetailModel> getSaledetails() {
+    return saledetails;
+  }
+
+  public void setSaledetails(List<SaledetailModel> saledetails) {
+    this.saledetails = saledetails;
+  }
 
   public String getName() {
     return name;
@@ -52,5 +71,28 @@ public class DeliveryModel extends AbstractModel<DeliveryModel> implements Seria
 
   public void setDeliveryDate(Date deliveryDate) {
     this.deliveryDate = deliveryDate;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+  public String getFullname() {
+    return fullname;
+  }
+
+  public void setFullname(String fullname) {
+    this.fullname = fullname;
+  }
+  public String getPhonenumber() {
+    return phonenumber;
+  }
+
+  public void setPhonenumber(String phonenumber) {
+    this.phonenumber = phonenumber;
   }
 }

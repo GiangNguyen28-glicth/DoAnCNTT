@@ -148,7 +148,6 @@
                                 </div>
                             </div>
                         </c:forEach>
-
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-6">
                         <div class="hading pb-20">

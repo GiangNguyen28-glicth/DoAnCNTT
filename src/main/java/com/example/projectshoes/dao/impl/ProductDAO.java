@@ -50,7 +50,7 @@ public class ProductDAO extends AbstractDAO<ProductModel> implements IProductDAO
         ProductModel productModel=new ProductModel();
         String query="";
         if(key==null){
-            query="FROM Product p";
+            query="FROM Product p where p.quantity>0";
         }
         else {
             query="FROM Product as p where p.name like '%"+key+"%'";

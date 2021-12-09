@@ -1,8 +1,8 @@
 package com.example.projectshoes.service.impl;
 
 import com.example.projectshoes.constant.SystemQueries;
-import com.example.projectshoes.controller.Cart.CartModel;
-import com.example.projectshoes.controller.Cart.LineItem;
+import com.example.projectshoes.utils.CartModel;
+import com.example.projectshoes.model.LineItem;
 import com.example.projectshoes.dao.ICacheDAO;
 import com.example.projectshoes.dao.IRoleDAO;
 import com.example.projectshoes.dao.IUserDAO;

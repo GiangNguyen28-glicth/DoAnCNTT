@@ -16,4 +16,5 @@ public interface IProductDAO extends GenericDAO<ProductModel> {
     void update(ProductModel productModel);
     int getTotalItem();
     int getTotalItemByCategory(String code);
+
 }

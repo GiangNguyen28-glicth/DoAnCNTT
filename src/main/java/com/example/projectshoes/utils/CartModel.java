@@ -1,4 +1,6 @@
-package com.example.projectshoes.controller.Cart;
+package com.example.projectshoes.utils;
+
+import com.example.projectshoes.model.LineItem;
 
 import java.util.ArrayList;
 
@@ -39,7 +41,7 @@ public class CartModel {
             }
         }
     }
-    public double totalPrice(LineItem item){
+    public double totalPrice(){
         double total=0;
         for(int i=0;i<items.size();i++){
             LineItem lineItem=items.get(i);

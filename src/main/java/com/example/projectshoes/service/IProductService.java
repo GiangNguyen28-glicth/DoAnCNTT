@@ -1,5 +1,6 @@
 package com.example.projectshoes.service;
 
+import com.example.projectshoes.model.DeliveryModel;
 import com.example.projectshoes.model.ProductModel;
 import com.example.projectshoes.model.UserModel;
 import com.example.projectshoes.paging.Pageble;
@@ -16,5 +17,5 @@ public interface IProductService {
     List<ProductModel> findbyCategory(Pageble pageble,String code);
     List<ProductModel> Sort(String sql,String categorycode);
     int getTotalItemByCategory(String code);
-    void UpdateAfertCheckout(HttpServletRequest req, UserModel userModel);
+    void UpdateAfertCheckout(HttpServletRequest req, UserModel userModel, DeliveryModel deliveryModel);
 }

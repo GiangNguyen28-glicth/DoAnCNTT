@@ -7,7 +7,6 @@ import java.io.Serializable;
 @Table(name = "saledetail")
 public class SaledetailModel extends AbstractModel<SaledetailModel> implements Serializable{
 
-    //  @Column(name = "user_id")
     @Transient
     private Long userId;
     //  @Column(name = "product_id")
@@ -26,17 +25,17 @@ public class SaledetailModel extends AbstractModel<SaledetailModel> implements S
     @Column(name = "status_delivery")
     private String status_delivery;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private UserModel user = null;
+    @ManyToOne(targetEntity = UserModel.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private UserModel user;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "delivery_id", referencedColumnName = "id")
-    private DeliveryModel delivery = null;
+    @ManyToOne(targetEntity = DeliveryModel.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "delivery_id")
+    private DeliveryModel delivery;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private ProductModel product = null;
+    @ManyToOne(targetEntity = ProductModel.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id")
+    private ProductModel product;
 
     public SaledetailModel() {
     }
@@ -111,16 +110,6 @@ public class SaledetailModel extends AbstractModel<SaledetailModel> implements S
       this.deliveryId = deliveryId;
     }
 
-    public ProductModel getProduct() {
-      if (this.product == null) {
-        product = new ProductModel();
-      }
-      return product;
-    }
-
-    public void setProduct(ProductModel product) {
-      this.product = product;
-    }
 
     public Long getCode() {
       return code;
@@ -128,5 +117,13 @@ public class SaledetailModel extends AbstractModel<SaledetailModel> implements S
 
     public void setCode(Long code) {
       this.code = code;
+    }
+
+    public ProductModel getProduct() {
+        return product;
+    }
+
+    public void setProduct(ProductModel product) {
+        this.product = product;
     }
   }

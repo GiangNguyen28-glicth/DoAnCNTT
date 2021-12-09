@@ -111,4 +111,11 @@ public class SaledetailDAO extends AbstractDAO<SaledetailModel> implements ISale
         saledetailModel.setListResult(q.getResultList());
         return saledetailModel.getListResult();
     }
+
+    @Override
+    public List<SaledetailModel> findbyProductId(Long id) {
+        StringBuilder sql=new StringBuilder("select u from Saledetail u where u.product.id="+id);
+        List<SaledetailModel> saledetailModels=queryHibernate(sql.toString(),null);
+        return saledetailModels;
+    }
 }

@@ -1,18 +1,16 @@
 package com.example.projectshoes.controller.Cart;
 
-import com.example.projectshoes.constant.SystemConstant;
+import com.example.projectshoes.model.LineItem;
 import com.example.projectshoes.model.ProductModel;
 import com.example.projectshoes.model.UserModel;
 import com.example.projectshoes.service.IDeliveryService;
 import com.example.projectshoes.service.IProductService;
 import com.example.projectshoes.service.ISaledetailService;
 import com.example.projectshoes.service.IUserService;
-import com.example.projectshoes.utils.JavaMailUtil;
-import com.example.projectshoes.utils.PathUtil;
+import com.example.projectshoes.utils.CartModel;
 import com.example.projectshoes.utils.SessionUtil;
 
 import javax.inject.Inject;
-import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -47,8 +45,7 @@ public class ListCart extends HttpServlet {
                 rd.forward(req,resp);
             }
             else {
-                ProductModel productModel=new ProductModel();
-                productModel=productService.findOne(id);
+                ProductModel productModel=productService.findOne(id);
                 String quantityString = req.getParameter("quantity");
                 double total;
                 CartModel cart = (CartModel) SessionUtil.getInstance().getValue(req,"cart");
@@ -93,14 +90,13 @@ public class ListCart extends HttpServlet {
                         }
                     }
                 }
-                total=cart.totalPrice(lineItem);
+                total=cart.totalPrice();
                 SessionUtil.getInstance().putValue(req,"cart",cart);
                 SessionUtil.getInstance().putValue(req,"total",total);
                 url="/views/web/Cart.jsp";
             }
         }
-        RequestDispatcher rd=req.getRequestDispatcher(url);
-        rd.forward(req,resp);
+        resp.sendRedirect(url);
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -112,23 +108,7 @@ public class ListCart extends HttpServlet {
                 url="/views/web/login.jsp";
             }
             else {
-                CartModel cart = (CartModel) SessionUtil.getInstance().getValue(req,"cart");
-                if(cart!=null){
-                    //                try {
-//                    JavaMailUtil.sendMail(userModel.getEmail(), SystemConstant.TEAMPLATE_MAIL);
-//                } catch (MessagingException e) {
-//                    e.printStackTrace();
-//                }
-                    productService.UpdateAfertCheckout(req,userModel);
-                    userService.removeCart(req);
-                    //saledetailService.saveSaledetail()
-                    req.setAttribute("userModel",userModel);
-                    url="/views/web/Checkout.jsp";
-                }
-                else {
-                    url="/views/web/Cart.jsp";
-                }
-
+                url="/views/web/Cart.jsp";
             }
         }
         RequestDispatcher rd=req.getRequestDispatcher(url);

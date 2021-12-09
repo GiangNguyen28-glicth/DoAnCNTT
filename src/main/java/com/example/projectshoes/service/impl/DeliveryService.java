@@ -20,7 +20,6 @@ public class DeliveryService implements IDeliveryService {
 
     @Override
     public Long saveDelivery(DeliveryModel deliveryModel) {
-        deliveryModel.setCreatedDate(new Timestamp(System.currentTimeMillis()));
         deliveryModel.setModifiedDate(new Timestamp(System.currentTimeMillis()));
         return deliveryDAO.saveDelivery(deliveryModel);
     }

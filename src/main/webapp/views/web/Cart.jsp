@@ -84,83 +84,91 @@
                 </div>
             </div>
             <div class="estimate">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h2 class="reviews-head pb-20">Estimate shipping and tax</h2>
-                        <form class="main-form">
+                <form id="checkoutcart" class="main-form" action="/authorize_payment" method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h2 class="reviews-head pb-20">Your Information</h2>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <select class="form-control">
+                                        <select id="city" name="city" class="form-control" required>
                                             <option selected="" value="">Select Country</option>
-                                            <option value="1">India</option>
-                                            <option value="2">China</option>
-                                            <option value="3">Pakistan</option>
+                                            <option value="Binh Duong">Binh Duong</option>
+                                            <option value="Thu Duc">Thu Duc</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <select class="form-control">
-                                            <option selected="" value="">Select State/Province</option>
-                                            <option value="1">---</option>
+                                        <select id="sex" class="form-control" required>
+                                            <option selected="" value="">Choose Your Gender</option>
+                                            <option value="1">Male</option>
+                                            <option value="1">FeMale</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <select class="form-control">
-                                            <option selected="" value="">Select City</option>
-                                            <option value="1">---</option>
-                                        </select>
+                                        <input id="fname" name="fname" class="form-control" placeholder="First Name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input id="lname" name="lname" class="form-control" placeholder="Last Name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input id="phonenumber" name="phonenumber" class="form-control" placeholder="Phone Number" required>
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="cart-total-table">
-                            <div class="responsive-table">
-                                <table class="table border">
-                                    <thead>
-                                    <tr>
-                                        <th colspan="2">Cart Total</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>Item(s) Subtotal</td>
-                                        <td>
-                                            <div class="price-box">
-                                                <span class="price">$${total}</span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Shipping</td>
-                                        <td>
-                                            <div class="price-box">
-                                                <span class="price">$0.00</span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="payable"><b>Amount Payable</b></td>
-                                        <td>
-                                            <div class="price-box">
-                                                <span class="price">$${total}</span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="share-wishlist">
-                                <a href="/cart?action=checkout" class="btn btn-color">Proceed to checkout <i class="fa fa-angle-right"></i></a>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="cart-total-table">
+                                <div class="responsive-table">
+                                    <table class="table border">
+                                        <thead>
+                                        <tr>
+                                            <th colspan="2">Cart Total</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>Item(s) Subtotal</td>
+                                            <td>
+                                                <div class="price-box">
+                                                    <span class="price">$${total}</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Shipping</td>
+                                            <td>
+                                                <div class="price-box">
+                                                    <span class="price">$0.00</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="payable"><b>Amount Payable</b></td>
+                                            <td>
+                                                <div class="price-box">
+                                                    <span class="price">$${total}</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="share-wishlist">
+                                    <button type="submit" class="btn btn-color" onclick="getValueForm()"/>Proceed to checkout <i class="fa fa-angle-right"></i></a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
+
             </div>
         </div>
     </div>
@@ -169,6 +177,29 @@
     function getValUpdate(param) {
         var input=document.getElementById("ipqtt"+param).value;
         document.getElementById("qtt"+param).value=input;
+    }
+    function getValueForm() {
+        var fname=document.getElementById("fname").value;
+        var lname=document.getElementById("lname").value;
+        var phonenumber=document.getElementById("phonenumber").value;
+        var address=document.getElementById("city").value;
+        var fullname=lname+fname;
+        if(fname!=""&&lname!=""&&phonenumber!=""&&address!=""){
+            var data = {};
+            data['fullname']=fullname;
+            data['address']=address;
+            data['phonenumber']=phonenumber;
+            checkOut(data);
+        }
+    }
+    function checkOut(data) {
+        $.ajax({
+            url:"/authorize_payment",
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+        });
     }
 </script>
 </body>
