@@ -1,8 +1,5 @@
 package com.example.projectshoes.dao.impl;
-
-
 import com.example.projectshoes.dao.ICategoryDAO;
-import com.example.projectshoes.mapper.CategoryMapper;
 import com.example.projectshoes.model.CategoryModel;
 import java.util.List;
 

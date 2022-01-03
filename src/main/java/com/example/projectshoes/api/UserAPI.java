@@ -1,9 +1,13 @@
 package com.example.projectshoes.api;
 
+import com.example.projectshoes.constant.SystemConstant;
 import com.example.projectshoes.message.ResponseMessage;
 import com.example.projectshoes.model.UserModel;
 import com.example.projectshoes.service.IUserService;
 import com.example.projectshoes.utils.HttpUtil;
+import com.example.projectshoes.utils.JavaMailUtil;
+import com.example.projectshoes.utils.MailTemplateUtil;
+import com.example.projectshoes.utils.OtpUtil;
 import com.example.projectshoes.validate.MyValidator;
 import java.io.IOException;
 import javax.inject.Inject;
@@ -22,20 +26,20 @@ public class UserAPI extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException {
+          throws ServletException, IOException {
 
     ObjectMapper mapper = new ObjectMapper();
     req.setCharacterEncoding("UTF-8");
     resp.setContentType("application/json");
     UserModel userModel = HttpUtil.of(req.getReader()).toModel(UserModel.class);
     UserModel findUser = userService.findByUsernameAndPassword(userModel.getUsername(),
-        userModel.getPassword());
+            userModel.getPassword());
     mapper.writeValue(resp.getOutputStream(), findUser);
   }
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException {
+          throws ServletException, IOException {
     ObjectMapper mapper = new ObjectMapper();
     MyValidator myValidator = new MyValidator(userService);
     req.setCharacterEncoding("UTF-8");
@@ -43,7 +47,14 @@ public class UserAPI extends HttpServlet {
     UserModel userModel = HttpUtil.of(req.getReader()).toModel(UserModel.class);
     ResponseMessage.setMessage(myValidator.validateForm(userModel));
     if (ResponseMessage.getInstance().getMessage() == null) {
-      userService.save(userModel);
+      try {
+        SystemConstant.Otp = OtpUtil.generateOtp(6);
+        SystemConstant.userVerify = userModel;
+        JavaMailUtil.sendMail(userModel.getEmail(),
+                MailTemplateUtil.templateMailVeiry(SystemConstant.Otp), "Verify Account");
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     } else {
       userModel.setMessage(ResponseMessage.getResponseMessage().getMessage());
     }

@@ -1,7 +1,6 @@
 package com.example.projectshoes.dao.impl;
 
 import com.example.projectshoes.dao.IDeliveryDAO;
-import com.example.projectshoes.mapper.DeliveryMapper;
 import com.example.projectshoes.model.DeliveryModel;
 import com.example.projectshoes.utils.HibernateUtil;
 import org.hibernate.Session;
@@ -9,7 +8,6 @@ import org.hibernate.query.Query;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 public class DeliveryDAO extends AbstractDAO<DeliveryModel> implements IDeliveryDAO {
@@ -61,16 +59,6 @@ public class DeliveryDAO extends AbstractDAO<DeliveryModel> implements IDelivery
     @Override
     public void update(DeliveryModel deliveryModel) {
         saveDelivery(deliveryModel);
-    }
-
-    @Override
-    public List<DeliveryModel> PageDelivery(int page) {
-        if (page < 1) {
-            page = 1;
-        }
-        int offset = (page - 1) * 5;
-        StringBuilder sql = new StringBuilder("select * from Delivery LIMIT 5 OFFSET ?");
-        return query(sql.toString(), new DeliveryMapper(), offset);
     }
 
     @Override

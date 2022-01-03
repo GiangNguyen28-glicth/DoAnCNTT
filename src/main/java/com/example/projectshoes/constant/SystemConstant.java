@@ -4,8 +4,6 @@ import com.example.projectshoes.model.ProductModel;
 import com.example.projectshoes.model.UserModel;
 
 public class SystemConstant {
-
-
   public static final String ADMIN = "ADMIN";
   public static final String USER = "USER";
   public static String rememberUsername = "";

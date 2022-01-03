@@ -30,9 +30,7 @@ public class JavaMailUtil {
         return new PasswordAuthentication(myAccountEmail, password);
       }
     });
-
     Message message = prepareMessage(session, myAccountEmail, recepient, template, subject);
-
     Transport.send(message);
     System.out.println("Message sent successfully");
   }

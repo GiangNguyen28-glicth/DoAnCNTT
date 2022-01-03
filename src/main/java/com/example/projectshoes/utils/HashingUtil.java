@@ -1,7 +1,4 @@
 package com.example.projectshoes.utils;
-
-import com.example.projectshoes.model.UserModel;
-
 public class HashingUtil {
 
   private static final UpdatebleBCrypt bcrypt = new UpdatebleBCrypt(11);

@@ -52,10 +52,6 @@ public class DeliveryService implements IDeliveryService {
         deliveryDAO.update(deliveryModel);
     }
 
-    @Override
-    public List<DeliveryModel> pageDelivery(int page) {
-        return deliveryDAO.PageDelivery(page);
-    }
 
     @Override
     public int getTotalItem() {

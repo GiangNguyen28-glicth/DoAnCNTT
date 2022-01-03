@@ -12,6 +12,5 @@ public interface IDeliveryService {
     void deleteDelivery(long[] ids);
     DeliveryModel findOne(Long id);
     void update(DeliveryModel deliveryModel);
-    List<DeliveryModel> pageDelivery(int page);
     int getTotalItem();
 }

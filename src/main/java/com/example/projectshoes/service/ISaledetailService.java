@@ -10,7 +10,6 @@ public interface ISaledetailService {
     void deleteSaledetail(long[] ids);
     SaledetailModel findOne(Long id);
     void update(SaledetailModel saledetailModel);
-    List<SaledetailModel> pageProduct(int page);
     int getTotalItem();
     List<SaledetailModel> gettop3();
     void deletebyProductId(long[] ids);

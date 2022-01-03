@@ -13,7 +13,6 @@ public interface IDeliveryDAO extends GenericDAO<DeliveryModel>{
     DeliveryModel findByDeliveryID(Long id);
     void deleteDelivery(long id);
     void update(DeliveryModel deliveryModel);
-    List<DeliveryModel> PageDelivery(int page);
     int getTotalItem();
     DeliveryModel getbyTime(Timestamp date, String phonenumber, String fullname, String address);
 }

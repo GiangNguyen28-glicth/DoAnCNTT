@@ -1,13 +1,13 @@
 package com.example.projectshoes.controller.web;
 
 import com.example.projectshoes.constant.SystemConstant;
+import com.example.projectshoes.model.UserModel;
 import com.example.projectshoes.service.IUserService;
 import com.example.projectshoes.utils.JavaMailUtil;
 import com.example.projectshoes.utils.MailTemplateUtil;
 import java.io.IOException;
 import java.util.ResourceBundle;
 import javax.inject.Inject;
-import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,11 +27,12 @@ public class OtpController extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException {
+          throws ServletException, IOException {
     this.message = req.getParameter("message");
     this.alert = req.getParameter("alert");
+    String temp=SystemConstant.userVerify.getEmail();
     req.setAttribute("message",
-        resourceBundle.getString(this.message) + SystemConstant.userVerify.getEmail());
+            resourceBundle.getString(this.message) + SystemConstant.userVerify.getEmail());
     req.setAttribute("alert", this.alert);
     if (SystemConstant.Otp != null) {
       this.url = "/views/web/otp.jsp";
@@ -44,23 +45,23 @@ public class OtpController extends HttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException {
+          throws ServletException, IOException {
     String otp = req.getParameter("otp");
     if (otp != null) {
       if (otp.equals(SystemConstant.Otp)) {
         try {
           userService.save(SystemConstant.userVerify);
           JavaMailUtil.sendMail(SystemConstant.userVerify.getEmail(),
-              MailTemplateUtil.templateMailCongratulation(), "Conratulation!");
+                  MailTemplateUtil.templateMailCongratulation(), "Congratulations!");
           SystemConstant.Otp = null;
           this.message = resourceBundle.getString("register_success");
           this.alert = "success";
           this.url = "/views/web/login.jsp";
-        } catch (MessagingException e) {
+        } catch (Exception e) {
           e.printStackTrace();
         }
       } else {
-        this.message = resourceBundle.getString("otpUncorrect");
+        this.message = resourceBundle.getString("otpUncorrected");
         this.alert = "danger";
         this.url = "/views/web/otp.jsp";
       }
